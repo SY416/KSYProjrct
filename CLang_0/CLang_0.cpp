@@ -33,7 +33,7 @@ void Fun4() {
     int ret1 = Fun1();
     int ret12 = Fun2();
     int ret13 = Fun3();
-    //char buffer1[3] = { 'a','b','c','\n' };
+    //char buffer1[3] = { 'a','b','c','\n' };//error
     char buffer2[4] = { 'a','b','c','\n' };
     char buffer3[] = { 'a','b','c','\n' };
     char buffer4[3] = { 'a' };
@@ -45,7 +45,8 @@ int Fun5() {
     return number[1];
 }
 int Fun6() {
-    int a = 10;
+    //int(정수형 변수, 4바이트)
+    int a = 10;//메모리에 4바이트를 할당할 수 있는 임의의 주소를 사용한다.
     std::cout << a << std::endl;
     a = 20;
     std::cout << a << std::endl;
@@ -63,7 +64,10 @@ int Fun6() {
     std::cout << &d << std::endl;//d의 주소
     std::cout << d << std::endl;//c의 주소
     std::cout << *d << std::endl;//c의 값
-    int num[5] = { 1,3,5,7,9 };
+    
+    
+    int num[5];
+    num[0] = 1; num[1] = 3; num[2] = 5; num[3] = 7; num[4] = 9;
     int* ptr1 = &num[0];
     int* ptr5 = num + 0;//&num[0]
     int* ptr6 = num + 1;//&num[1]
@@ -72,7 +76,14 @@ int Fun6() {
     int* ptr9 = num + 4;
     //int ptr1 = *(num + 0);//num[0]
 
+    int numA;
+    int numB[4];
+    int* ptrAddressA = &numA;
+    int* ptrAddressB = numB;
     int* ptrAddressC = num;
+
+    int* a1Address = ptrAddressC;
+    int a1Value = *ptrAddressC;
 
     ptrAddressC++;//ptrAdress+1
     int a1 = *ptrAddressC;
@@ -97,8 +108,10 @@ int Fun6() {
 }
 int main()
 {
-    Fun6();
-    //Fun4();
+    Fun4();
+    
+    //Fun6();
+    
     //std::cout << Fun5()<<"\n";
     int x = 2, y = 3, z = 1;
     x *= (y++) * (++z);
