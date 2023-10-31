@@ -1,16 +1,16 @@
 ﻿#include <iostream>
 #include<Vector>
-#include "TPlayer.h"
-#include "TNPC.h"
+#include "Player.h"
+#include "NPC.h"
 
 
 int main()
 {
-    std::vector<TStatus*> Stat_Vector;
-    TStatus* list0 = new TStatus;
+    std::vector<Status*> Stat_Vector;
+    Status* list0 = new Status;
     Stat_Vector.push_back(list0);
     //---------------------------------------------------------------
-    TStatus* list1 = new TNPC;
+    Status* list1 = new NPC;
     list1->SetStr(list0->GetStr());
     list1->SetDex(list0->GetDex());
     list1->SetInt(list0->GetInt());
@@ -26,7 +26,7 @@ int main()
     list1->SetCriDamage(list0->GetCriDamage());
     Stat_Vector.push_back(list1);
     //----------------------------------------------------------------
-    TStatus* list2 = new TPlayer;
+    Status* list2 = new Player;
     list2->SetStr(list0->GetStr());
     list2->SetDex(list0->GetDex());
     list2->SetInt(list0->GetInt());

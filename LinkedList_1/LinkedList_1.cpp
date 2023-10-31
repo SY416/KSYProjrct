@@ -1,10 +1,10 @@
-﻿#include "TLinkedList.cpp"
+﻿#include "LinkedList.cpp"
 
 
 int main()
 {
-    TLinkedList<float> list1;
-    TLinkedList<char> list2;
+    LinkedList<float> list1;
+    LinkedList<char> list2;
     float f = 3.14f;
     char c = 'a';
 

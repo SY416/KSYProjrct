@@ -1,5 +1,5 @@
-﻿#include "TQueue.h"
-TQueue g_Queue;
+﻿#include "Queue.h"
+Queue g_Queue;
 int main()
 {
     int n = 9;

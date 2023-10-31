@@ -141,15 +141,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="TNPC.cpp" />
-    <ClCompile Include="TPlayer.cpp" />
-    <ClCompile Include="TStatus.cpp" />
+    <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Status.cpp" />
     <ClCompile Include="Vector_0.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TNPC.h" />
-    <ClInclude Include="TPlayer.h" />
-    <ClInclude Include="TStatus.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Status.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

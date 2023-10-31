@@ -1,13 +1,13 @@
 ﻿#include <iostream>
-//#include "TStatus.h"
-#include "TPlayer.h"
-#include "TNPC.h"
-#include "TLinkedList.h"
+//#include "Status.h"
+#include "Player.h"
+#include "NPC.h"
+#include "LinkedList.h"
 
 
 int main()
 {
-    TStatus a;
+    Status a;
     //std::cout << a;
     /*TNPC b;
     TPlayer c;
@@ -23,11 +23,11 @@ int main()
     for (int i = 0; i < 2; i++)
         delete list[i];*/
 
-    TLinkedList<TStatus*> g_StatusList;
-    TStatus* list0 = new TStatus;
+    LinkedList<Status*> g_StatusList;
+    Status* list0 = new Status;
     g_StatusList.Add(&list0);
 
-    TStatus* list1 = new TPlayer;
+    Status* list1 = new Player;
     g_StatusList.Add(&list1);
     //list1-> SetEXP(int s);
     int GetEXP();

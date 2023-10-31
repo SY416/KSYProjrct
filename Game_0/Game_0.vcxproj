@@ -142,16 +142,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game_0.cpp" />
-    <ClCompile Include="TLinkedList.cpp" />
-    <ClCompile Include="TNPC.cpp" />
-    <ClCompile Include="TPlayer.cpp" />
-    <ClCompile Include="TStatus.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
+    <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Status.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TLinkedList.h" />
-    <ClInclude Include="TNPC.h" />
-    <ClInclude Include="TPlayer.h" />
-    <ClInclude Include="TStatus.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Status.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
