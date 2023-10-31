@@ -9,10 +9,10 @@ struct Stat {
 	int criChance = 100;
 	int criDamage = 95;
 	friend std::ostream& operator<<(std::ostream& os, const Stat& t) {
-		os << "  HP             " << t.hp << "  MP               " << t.mp
-			<< "\n  STR            " << t.strength << "\n  DEX            " << t.dexterity << "\n  INT            " << t.intelligence << "\n  LUK            " << t.luck
-			<< "\n  공격력         " << t.attack << "    방어력           " << t.defence
-			<< "\n  크리티컬 확률  " << t.criChance << " %" << "   크리티컬 데미지  " << t.criDamage << " %\n\n" << std::endl;
+		os << "  HP               " << t.hp << "\n  MP               " << t.mp
+			<< "\n  STR              " << t.strength << "\n  DEX              " << t.dexterity << "\n  INT              " << t.intelligence << "\n  LUK              " << t.luck
+			<< "\n  공격력           " << t.attack << "\n  방어력           " << t.defence
+			<< "\n  크리티컬 확률    " << t.criChance << " %" << "\n  크리티컬 데미지  " << t.criDamage << " %\n\n" << std::endl;
 		return os;
 	}
 };
