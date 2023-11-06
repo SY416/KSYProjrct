@@ -16,7 +16,7 @@ int main()
     sa.sin_addr.s_addr = inet_addr("192.168.0.93");
     sa.sin_port = htons(port);
 
-    int ret = bind(sock, (SOCKADDR*)&sa, sizeof(sa));
+    int ret = bind(sock, (SOCKADDR*)&sa, sizeof(sa));//ip와 포트번호를 통해 주소를 만듬
     ret = listen(sock, SOMAXCONN);
     SOCKADDR_IN clientaddr;
     SOCKET clientsock;
