@@ -3,7 +3,7 @@
 #include <iostream>
 #include <winsock2.h>
 
-const short port = 100000;
+const short port = 10000;
 
 int main()
 {
