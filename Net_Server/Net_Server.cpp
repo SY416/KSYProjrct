@@ -10,6 +10,7 @@ int main()
     WSADATA wsa;
     int iRet = 0;
     WSAStartup(MAKEWORD(2, 2), &wsa);
+    if (iRet != 0) return 1;
 
     SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
     SOCKADDR_IN sa;
