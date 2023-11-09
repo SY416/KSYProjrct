@@ -171,8 +171,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             LineTo(hdc, 520, 300);
 
             MoveToEx(hdc, 380, 300, NULL);//
-            for(int degree)
-            LineTo(hdc, 520, 300+sin(180);
+            //Arc
+            
             EndPaint(hWnd, &ps);
             
         }

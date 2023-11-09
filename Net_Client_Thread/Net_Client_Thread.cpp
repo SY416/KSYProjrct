@@ -3,10 +3,12 @@
 #include <iostream>
 #include <winsock2.h>
 #include <thread>
+#include <string>
 
 const short port = 10000;
 
 SOCKET sock;
+
 
 void sendWork() {
     while (1) {
@@ -27,21 +29,20 @@ void sendWork() {
 
 int main()
 {
+    char nickname[50];
+    int inameLen = strlen(nickname);
+    printf("닉네임 입력: ");
+    fgets(nickname, 50, stdin);
+
     WSADATA wsa;
     WSAStartup(MAKEWORD(2, 2), &wsa);
 
     sock = socket(AF_INET, SOCK_STREAM, 0);
+    SocketAsyncEventArgs();//https://csj000714.tistory.com/672
     SOCKADDR_IN sa;
     sa.sin_family = AF_INET;
     sa.sin_addr.s_addr = inet_addr("192.168.0.93");
     sa.sin_port = htons(port);
-
-    char name[100] = { 0 };
-    int iLenName = strlen(name);
-    int iSendName;
-    std::cout << "닉네임을 입력: ";
-    fgets(name, 100, stdin);
-
 
     int ret = connect(sock, (SOCKADDR*)&sa, sizeof(sa));
     if (ret == 0) {
@@ -50,9 +51,7 @@ int main()
     else {
         printf("서버 접속 ip = %s, Port: %d 불가!!!\n", inet_ntoa(sa.sin_addr), ntohs(sa.sin_port));
     }
-    iLenName = strlen(name);
-    iSendName = send(sock, name, iLenName, 0);
-
+  
     std::thread sendthread(sendWork);
     sendthread.detach();//메인 프로세스 종료후에도 연산 수행
     
