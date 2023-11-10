@@ -29,16 +29,15 @@ void sendWork() {
 
 int main()
 {
-    char nickname[50];
+    /*char nickname[50];
     int inameLen = strlen(nickname);
     printf("닉네임 입력: ");
-    fgets(nickname, 50, stdin);
+    fgets(nickname, 50, stdin);*/
 
     WSADATA wsa;
     WSAStartup(MAKEWORD(2, 2), &wsa);
 
     sock = socket(AF_INET, SOCK_STREAM, 0);
-    SocketAsyncEventArgs();//https://csj000714.tistory.com/672
     SOCKADDR_IN sa;
     sa.sin_family = AF_INET;
     sa.sin_addr.s_addr = inet_addr("192.168.0.93");
