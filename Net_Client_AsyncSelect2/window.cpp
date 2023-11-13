@@ -33,15 +33,18 @@ static int recvWork() {
 	return 1;
 }
 static int sendWork(const char* buf, int iLen) {
-	char buf[256] = { 0, };
-	int iLen = strlen(buf);
 	int iSendByte;
-	if (iSendByte == SOCKET_ERROR) {
+	iLen = (int)strlen(buf);
+	iSendByte = send(sock, buf, iLen, 0);
+	if (iSendByte == SOCKET_ERROR)
+	{
 		int iError = WSAGetLastError();
 		if (iError != WSAEWOULDBLOCK) {
 			return -1;
 		}
-		else return 0;
+		else {
+			return 0;
+		}
 	}
 	printf("%d 바이트를 전송했습니다", iSendByte);
 	return iLen;
@@ -55,12 +58,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case 200: {
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(g_hEdit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
-			sendWork(buffer, strlen(buffer));
+			sendWork(buffer, (int)strlen(buffer));
 		}break;
 		}
 	}break;
 	case NETWORK_MSG: {
-		if (WSAGETSELECTERROR(lPARAM) != 0) PostQuitMessage(0);
+		if (WSAGETSELECTERROR(lParam) != 0) PostQuitMessage(0);
 
 		WORD dwSelect = WSAGETSELECTEVENT(lParam);
 		switch (dwSelect) {
@@ -132,12 +135,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	return (int)msg.wParam;
 }
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
-	HWND hWnd = CreateWindowW(L"채팅창", L"채팅 서버", WS_OVERLAPPEDWINDOW, 0, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
-	if (!hWnd) return FALSE;
-
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow){
+	HWND hWnd = CreateWindowW(L"KGCA_WINDOWS", L"체팅프로그램", WS_OVERLAPPEDWINDOW, 0, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
+	if (!hWnd)
+	{
+		return FALSE;
+	}
+	g_hWnd = hWnd;
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
+	return TRUE;
 }
 ATOM MyRegisterClass(HINSTANCE hInstance) {
 	WNDCLASSEXW wcex;

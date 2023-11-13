@@ -5,7 +5,7 @@
 #include <iostream>
 #include <thread>
 
-#define NETWORK_MSG(WM_USER+1)
+#define NETWORK_MSG (WM_USER+1)
 
 const short port = 10000;
 
@@ -38,9 +38,6 @@ static int mainNet()
 
     u_long on = TRUE;
     ioctlsocket(sock, FIONBIO, &on);
-
-    std::thread sendthread(sendWork);
-    sendthread.detach();//메인 프로세스 종료후에도 연산 수행
 
     return 1;
 }
