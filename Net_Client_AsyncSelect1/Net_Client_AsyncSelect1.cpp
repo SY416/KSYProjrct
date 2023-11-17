@@ -70,7 +70,6 @@ static int mainNet()
     ioctlsocket(sock, FIONBIO, &on);
 
     std::thread sendthread(sendWork);
-    sendthread.detach();//메인 프로세스 종료후에도 연산 수행
+    sendthread.detach();
 
     return 1;
-}
