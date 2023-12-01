@@ -19,7 +19,7 @@ void InitArr(tArr* _pArr);
 void PushBack(tArr* _pArr, int _iData);
 
 // 공간 추가 확장
-void Reallocate(tArr* _pArr);
+// void Reallocate(tArr* _pArr);// 외부에서 구현되지 않게 제외
 
 // 배열 메모리 해제 함수
 void ReleaseArr(tArr* _pArr);
