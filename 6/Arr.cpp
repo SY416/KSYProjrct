@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+void Reallocate(tArr* _pArr);
+
 void InitArr(tArr* _pArr)
 {
 	_pArr->pInt = (int*)malloc(sizeof(int) * 2);
@@ -51,4 +53,9 @@ void ReleaseArr(tArr* _pArr)
 	free(_pArr->pInt);
 	_pArr->iCount = 0;
 	_pArr->iMaxCount = 0;
+}
+
+void Sort(tArr* _pArr, void(*SortFunc)(int*, int))
+{
+	SortFunc(_pArr->pInt, _pArr->iCount);
 }
