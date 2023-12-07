@@ -56,7 +56,7 @@ bool CreateDevice::Init()
 
 bool CreateDevice::Render()
 {
-    float clearColor[] = { 1,0,0,1 };
+    float clearColor[] = { 1,0,0, };
     m_pd3dDeviceContext->ClearRenderTargetView(m_pd3dRenderTargetView, clearColor);
     m_pSwapChain->Present(0, 0);
     return true;
