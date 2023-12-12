@@ -26,7 +26,7 @@ BOOL CWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)
     AdjustWindowRect(&rt, dwWindowsStyle, FALSE);
 
     HWND hWnd = CreateWindowW(L"KSY_WINDOWS",
-        L"abc", dwWindowsStyle,
+        L"abc123", dwWindowsStyle,
         100, 100, rt.right - rt.left, rt.bottom - rt.top, nullptr, nullptr,
         hInstance, nullptr);
 

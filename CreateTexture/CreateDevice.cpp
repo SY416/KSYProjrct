@@ -203,6 +203,7 @@ bool CreateDevice::CreatePixelShader() {
 
     return true;
 }
+
 bool CreateDevice::CreateInputLayout()
 {
     const D3D11_INPUT_ELEMENT_DESC layout[] =
