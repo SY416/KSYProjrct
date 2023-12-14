@@ -83,7 +83,6 @@ bool CUIObj::LoadTexture(std::wstring texFileName)
     return false;
 }
 
-
 bool CUIObj::LoadTextureChange(std::wstring texFileName)
 {
     m_texChange = std::make_unique< DirectX::ScratchImage>();
@@ -287,6 +286,7 @@ bool CUIObj::CreatePixelShader() {
 
     return true;
 }
+
 bool CUIObj::CreateInputLayout()
 {
     const D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -326,6 +326,7 @@ bool CUIObj::Init()
 {
     return true;
 }
+
 bool CUIObj::Load(std::wstring texFileName)
 {
     m_IndexList.push_back(0);
@@ -350,7 +351,7 @@ bool CUIObj::Load(std::wstring texFileName)
     {
         return false;
     }
-    if (LoadTexture(texFileName))
+    if (!LoadTexture(texFileName))
     {
         return false;
     }
@@ -360,7 +361,7 @@ bool CUIObj::Load(std::wstring texFileName)
 
 bool    CUIObj::Render()
 {
-    m_pd3dContext->PSSetShaderResources(3, 1, &m_pTextureSRV);
+    m_pd3dContext->PSSetShaderResources(0, 1, &m_pTextureSRV);
     m_pd3dContext->VSSetShader(m_pVertexShader, NULL, 0);
     m_pd3dContext->PSSetShader(m_pPixelShader, NULL, 0);
     m_pd3dContext->IASetInputLayout(m_pVertexLayout);
@@ -382,9 +383,31 @@ bool    CUIObj::Render()
     return true;
 }
 
+bool    CUIObj::RenderChange()
+{
+    m_pd3dContext->PSSetShaderResources(0, 1, &m_pTextureSRVChange);
+    m_pd3dContext->VSSetShader(m_pVertexShader, NULL, 0);
+    m_pd3dContext->PSSetShader(m_pPixelShader, NULL, 0);
+    m_pd3dContext->IASetInputLayout(m_pVertexLayout);
+    m_pd3dContext->IASetIndexBuffer(m_pIndexbuffer, DXGI_FORMAT_R32_UINT, 0);
+    UINT pStrides = sizeof(TVertex);
+    UINT pOffsets = 0;
+    m_pd3dContext->IASetVertexBuffers(
+        0,
+        1,
+        &m_pVertexbuffer,
+        &pStrides,
+        &pOffsets);
+    m_pd3dContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_pd3dContext->DrawIndexed(m_IndexList.size(), 0, 0);
+    return true;
+}
+
 bool    CUIObj::Release()
 {
     if (m_pTextureSRV)m_pTextureSRV->Release();
+    if (m_pTextureSRVChange)m_pTextureSRVChange->Release();
+
     if (m_pVertexbuffer)m_pVertexbuffer->Release();
     if (m_pIndexbuffer)m_pIndexbuffer->Release();
 

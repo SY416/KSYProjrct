@@ -55,8 +55,9 @@ public:
 
 
 	std::unique_ptr<DirectX::ScratchImage> m_tex;
-	std::unique_ptr<DirectX::ScratchImage> m_texChange;
 	ID3D11ShaderResourceView* m_pTextureSRV = nullptr;
+
+	std::unique_ptr<DirectX::ScratchImage> m_texChange;
 	ID3D11ShaderResourceView* m_pTextureSRVChange = nullptr;
 
 	std::vector<TVertex>	m_VertexList; // 시스템 메모리
@@ -88,5 +89,8 @@ public:
 	bool    Init();
 	bool	Load(std::wstring texFileName);
 	bool    Render();
+	bool    RenderChange();
 	bool    Release();
 };
+
+class CUINumber : TUI

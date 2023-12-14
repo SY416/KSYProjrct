@@ -1,5 +1,8 @@
 #include "CWindow.h"
 
+bool g_bChange = true;
+int g_iChange = 0;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -9,6 +12,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         UINT width = LOWORD(lParam);
         UINT height = HIWORD(lParam);
         int k = 0;
+    }break;
+    case WM_LBUTTONDOWN:
+    {
+        g_bChange = !g_bChange;
+    }break;
+    case WM_RBUTTONDOWN:
+    {
+        g_iChange++;
+        if (g_iChange >= 10)g_iChange = 0;
     }break;
     case WM_CREATE: break;
     case WM_DESTROY:

@@ -1,6 +1,9 @@
 #pragma once
 #include <Windows.h>
 
+extern bool g_bChange;
+extern int g_iChange;
+
 class CWindow
 {
 public:
