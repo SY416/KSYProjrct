@@ -30,5 +30,9 @@ float4 PS( VS_OUT v) : SV_TARGET
 {
 	float4 texColor = g_txDiffuse.Sample(g_Sample, v.t);
 	// rgba = {texColor.r * v.c.r, texColor.g * v.c.g, texColor.b * v.c.b, texColor.a * v.c.a}
-	return texColor * v.c;
+	if(texColor.a < 0.5f) 
+	{
+		discard;
+	}
+	return texColor;
 }

@@ -58,7 +58,21 @@ bool Sample::Init()
 
     m_ui_1.Init();
     m_ui_1.Load(L"../../data/upgrade.png");
-
+    //
+    m_number.m_pd3dDevice = m_pd3dDevice;
+    m_number.m_pd3dContext = m_pd3dContext;
+    m_number.m_rtClient = m_rtClient;
+      
+    m_number.m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+    m_number.m_VertexList.emplace_back(TVector3(100.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+    m_number.m_VertexList.emplace_back(TVector3(100.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+    m_number.m_VertexList.emplace_back(TVector3(0.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+      
+    m_number.Init();
+    if (!m_number.Load(L"../../data/0.png"))
+    {
+        return false;
+    }
     return true;
 }
 
@@ -73,6 +87,18 @@ bool    Sample::Render()
     //m_ui_0.Render();
     m_ui_1.Render();
 
+    
+    m_pd3dContext->PSSetShaderResources(0, 1, &m_number.m_pTextureSRVArray[g_iChange]);
+    UINT pStrides = sizeof(TVertex);
+    UINT pOffsets = 0;
+    m_pd3dContext->IASetVertexBuffers(
+        0,
+        1,
+        &m_number.m_pVertexbuffer,
+        &pStrides,
+        &pOffsets);
+    m_pd3dContext->DrawIndexed(m_number.m_IndexList.size(), 0, 0);
+
     return true;
 }
 
@@ -82,6 +108,7 @@ bool    Sample::Release()
     m_ui.Release();
     m_ui_0.Release();
     m_ui_1.Release();
+    m_number.Release();
     return true;
 }
 

@@ -83,14 +83,32 @@ public:
 
 	bool CreateInputLayout();
 
-	bool LoadTexture(std::wstring texFileName);
+	virtual bool LoadTexture(std::wstring texFileName);
 	bool LoadTextureChange(std::wstring texFileName);
 public:
 	bool    Init();
 	bool	Load(std::wstring texFileName);
 	bool    Render();
 	bool    RenderChange();
-	bool    Release();
+	virtual bool    Release();
 };
 
-class CUINumber : TUI
+class CUINumber : public CUIObj
+{
+public:
+	std::unique_ptr<DirectX::ScratchImage> m_texArray[10];
+	ID3D11ShaderResourceView* m_pTextureSRVArray[10] = { nullptr, };
+	bool	LoadTexture(std::wstring texFileName) override;
+	bool    Release()
+	{
+		CUIObj::Release();
+		for (int i = 0; i < 10; i++)
+		{
+			if (m_pTextureSRVArray[i])
+			{
+				m_pTextureSRVArray[i]->Release();
+			}
+		}
+		return true;
+	}
+};
