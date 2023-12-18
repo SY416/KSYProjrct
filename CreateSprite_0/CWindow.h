@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#pragma comment (lib, "winmm.lib")
 
 extern bool g_bChange;
 extern int g_iChange;
@@ -17,6 +18,7 @@ public:
 	void ReleaseAll();
 public:
 	virtual bool GameInit() { return true; };
+	virtual bool GameFrame() { return true; };
 	virtual bool GameRender() { return true; };
 	virtual bool GameRelease() { return true; };
 public:

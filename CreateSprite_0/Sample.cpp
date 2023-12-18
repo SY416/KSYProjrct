@@ -1,4 +1,5 @@
 #include "Sample.h"
+#include "CTextureMgr.h"
 
 bool Sample::AlphaBlendState()
 {
@@ -146,6 +147,11 @@ bool Sample::CreateSampleState()
 
 bool Sample::Init()
 {
+    m_GameTime.Init();
+    CInput::Get().Init();
+
+    CTextureMgr::Get().Set(m_pd3dDevice, m_pd3dContext);
+    
     AlphaBlendState();
     CreateSampleState();
     CreatePixelShader();
@@ -154,72 +160,110 @@ bool Sample::Init()
     //
     // v3       v2
 
-    m_bk.m_pd3dDevice = m_pd3dDevice;
-    m_bk.m_pd3dContext = m_pd3dContext;
-    m_bk.m_rtClient = m_rtClient;
+    m_DefaultPlane.m_pd3dDevice = m_pd3dDevice;
+    m_DefaultPlane.m_pd3dContext = m_pd3dContext;
+    m_DefaultPlane.m_rtClient = m_rtClient;
 
-    m_bk.m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
-    m_bk.m_VertexList.emplace_back(TVector3(m_rtClient.right, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
-    m_bk.m_VertexList.emplace_back(TVector3(m_rtClient.right, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
-    m_bk.m_VertexList.emplace_back(TVector3(0.0f, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+    m_DefaultPlane.m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+    m_DefaultPlane.m_VertexList.emplace_back(TVector3(m_rtClient.right, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+    m_DefaultPlane.m_VertexList.emplace_back(TVector3(m_rtClient.right, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+    m_DefaultPlane.m_VertexList.emplace_back(TVector3(0.0f, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
     
-    m_bk.Init();
-    m_bk.Load(L"../../data/default.png");
-    //
-    m_ui.m_pd3dDevice = m_pd3dDevice;
-    m_ui.m_pd3dContext = m_pd3dContext;
-    m_ui.m_rtClient = m_rtClient;
-    
-    m_ui.m_VertexList.emplace_back(TVector3(0.0f, 520.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
-    m_ui.m_VertexList.emplace_back(TVector3(360.0f, 520.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
-    m_ui.m_VertexList.emplace_back(TVector3(360.0f, 600.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
-    m_ui.m_VertexList.emplace_back(TVector3(0.0f, 600.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-    
-    m_ui.Init();
-    m_ui.Load(L"../../data/layout.png");
-    //
-    m_ui_0.m_pd3dDevice = m_pd3dDevice;
-    m_ui_0.m_pd3dContext = m_pd3dContext;
-    m_ui_0.m_rtClient = m_rtClient;
-    
-    m_ui_0.m_VertexList.emplace_back(TVector3(10.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
-    m_ui_0.m_VertexList.emplace_back(TVector3(70.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
-    m_ui_0.m_VertexList.emplace_back(TVector3(70.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
-    m_ui_0.m_VertexList.emplace_back(TVector3(10.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-    
-    m_ui_0.Init();
-    if (!m_ui_0.Load(L"../../data/inven.png"))
+    m_DefaultPlane.Init();
+    if (!m_DefaultPlane.Load(L"../../data/default.png"))
     {
         return false;
     }
-    m_ui_0.LoadTextureChange(L"../../data/inven_2.png");
+    m_bk = std::make_shared<CUIObj>();
+        m_bk->m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+        m_bk->m_VertexList.emplace_back(TVector3(m_rtClient.right, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+        m_bk->m_VertexList.emplace_back(TVector3(m_rtClient.right, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+        m_bk->m_VertexList.emplace_back(TVector3(0.0f, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+        m_bk->Load(L"../../data/default.png");
+    m_uiList.push_back(m_bk);
+
+    //
+
+    m_ui = std::make_shared<CUIObj>();
+        m_ui->m_VertexList.emplace_back(TVector3(0.0f, 520.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+        m_ui->m_VertexList.emplace_back(TVector3(360.0f, 520.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+        m_ui->m_VertexList.emplace_back(TVector3(360.0f, 600.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+        m_ui->m_VertexList.emplace_back(TVector3(0.0f, 600.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+        m_ui->Load(L"../../data/layout.png");
+    m_uiList.push_back(m_ui);
+    //
+   
+    m_ui_0 = std::make_shared<CUIObj>();
+        m_ui_0->m_VertexList.emplace_back(TVector3(10.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+        m_ui_0->m_VertexList.emplace_back(TVector3(70.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+        m_ui_0->m_VertexList.emplace_back(TVector3(70.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+        m_ui_0->m_VertexList.emplace_back(TVector3(10.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+        if (!m_ui_0->Load(L"../../data/inven.png"))
+        {
+            return false;
+        }
+    m_uiList.push_back(m_ui_0);
     //m_ui_0.Load(L"../../data/inven.png");
     //
-    m_ui_1.m_pd3dDevice = m_pd3dDevice;
-    m_ui_1.m_pd3dContext = m_pd3dContext;
-    m_ui_1.m_rtClient = m_rtClient;
-
-    m_ui_1.m_VertexList.emplace_back(TVector3(80.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
-    m_ui_1.m_VertexList.emplace_back(TVector3(140.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
-    m_ui_1.m_VertexList.emplace_back(TVector3(140.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
-    m_ui_1.m_VertexList.emplace_back(TVector3(80.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-
-    m_ui_1.Init();
-    m_ui_1.Load(L"../../data/upgrade.png");
+    
+    m_ui_1 = std::make_shared<CUIObj>();
+        m_ui_1->m_VertexList.emplace_back(TVector3(80.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+        m_ui_1->m_VertexList.emplace_back(TVector3(140.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+        m_ui_1->m_VertexList.emplace_back(TVector3(140.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+        m_ui_1->m_VertexList.emplace_back(TVector3(80.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+        m_ui_1->Load(L"../../data/upgrade.png");
+    m_uiList.push_back(m_ui_1);
     //
-    m_number.m_pd3dDevice = m_pd3dDevice;
-    m_number.m_pd3dContext = m_pd3dContext;
-    m_number.m_rtClient = m_rtClient;
-      
-    m_number.m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
-    m_number.m_VertexList.emplace_back(TVector3(100.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
-    m_number.m_VertexList.emplace_back(TVector3(100.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
-    m_number.m_VertexList.emplace_back(TVector3(0.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-      
-    m_number.Init();
-    if (!m_number.Load(L"../../data/0.png"))
+    m_number = std::make_shared<CUIObj>();
+        m_number->m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+        m_number->m_VertexList.emplace_back(TVector3(100.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+        m_number->m_VertexList.emplace_back(TVector3(100.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+        m_number->m_VertexList.emplace_back(TVector3(0.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+        if (!m_number->Load(L"../../data/0.png"))
+        {
+            return false;
+        }
+    m_uiList.push_back(m_number);
+    return true;
+}
+
+bool    Sample::Frame()
+{
+    m_GameTime.Frame();
+    CInput::Get().Frame();
+   
+    if (CInput::Get().m_dwKeyState['W'] == KEY_PUSH)
     {
-        return false;
+        ::OutputDebugString(L"W[PUSH].\n");
+    }
+    if (CInput::Get().m_dwKeyState['W'] == KEY_HOLD)
+    {
+        ::OutputDebugString(L"W[HOLD].\n");
+    }
+    if (CInput::Get().m_dwKeyState['W'] == KEY_UP)
+    {
+        ::OutputDebugString(L"W[UP].\n");
+    }
+    if (CInput::Get().m_dwKeyState['A'] == KEY_PUSH)
+    {
+        ::OutputDebugString(L"A[PUSH].\n");
+    }
+    if (CInput::Get().m_dwKeyState['S'] == KEY_PUSH)
+    {
+        ::OutputDebugString(L"S[PUSH].\n");
+    }
+    if (CInput::Get().m_dwKeyState['D'] == KEY_PUSH)
+    {
+        ::OutputDebugString(L"D[PUSH].\n");
+    }
+    if (CInput::Get().m_dwKeyState[VK_LBUTTON] == KEY_UP)
+    {
+        g_bChange = !g_bChange;
+    }
+    if (CInput::Get().m_dwKeyState[VK_RBUTTON] == KEY_UP)
+    {
+        g_iChange++;
+        if (g_iChange >= 10) g_iChange = 0;
     }
     return true;
 }
@@ -229,26 +273,23 @@ bool    Sample::Render()
     m_pd3dContext->PSSetSamplers(0, 1, &m_pDefaultSS);
     m_pd3dContext->OMSetBlendState(m_pAlphaBlendEnable, 0, -1);
 
-    m_bk.Render();
-    m_ui.Render();
-    if (g_bChange)
-        m_ui_0.Render();
-    else
-        m_ui_0.RenderChange();
-    //m_ui_0.Render();
-    m_ui_1.Render();
+    CInput::Get().Render();
 
-    
-    m_pd3dContext->PSSetShaderResources(0, 1, &m_number.m_pTextureSRVArray[g_iChange]);
-    UINT pStrides = sizeof(TVertex);
-    UINT pOffsets = 0;
-    m_pd3dContext->IASetVertexBuffers(
-        0,
-        1,
-        &m_number.m_pVertexbuffer,
-        &pStrides,
-        &pOffsets);
-    m_pd3dContext->DrawIndexed(m_number.m_IndexList.size(), 0, 0);
+    for (auto data : m_uiList)
+    {
+        m_pd3dContext->UpdateSubresource(m_DefaultPlane.m_pVertexbuffer,
+            0,
+            nullptr,
+            &data->m_VertexList.at(0),
+            0,
+            0);
+        m_DefaultPlane.PreRender();
+        data->Frame(m_GameTime.m_fSecondPerFrame);
+        data->Render(m_pd3dContext);
+        m_DefaultPlane.PostRender();
+    }
+
+    m_GameTime.Render();
 
     return true;
 }
@@ -260,11 +301,17 @@ bool    Sample::Release()
     if (m_pAlphaBlendEnable)m_pAlphaBlendEnable->Release();
     if (m_pAlphaBlendDisable)m_pAlphaBlendDisable->Release();
     if (m_pPixelShaderAlphaTest)m_pPixelShaderAlphaTest->Release();
-    m_bk.Release();
-    m_ui.Release();
-    m_ui_0.Release();
-    m_ui_1.Release();
-    m_number.Release();
+    for (auto data : m_uiList)
+    {
+        data->Release();
+    }
+
+    m_DefaultPlane.Release();
+
+    CInput::Get().Release();
+
+    m_GameTime.Release();
+
     return true;
 }
 

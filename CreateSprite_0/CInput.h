@@ -6,11 +6,20 @@ enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP};
 class CInput
 {
 public:
-	POINT m_ptMouse;
-	DWORD m_dwKeyState[256];
+	DWORD    m_dwKeyState[256];
 	static CInput& Get()
 	{
-		static CInput mng
+		static CInput mgr;
+		return mgr;
 	}
+public:
+	bool	 Init();
+	bool	 Frame();
+	bool	 Render();
+	bool	 Release();
+private:
+	CInput() {};
+public:
+	~CInput() {}
 };
 

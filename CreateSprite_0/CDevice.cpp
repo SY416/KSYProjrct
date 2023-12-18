@@ -63,6 +63,13 @@ bool    CDevice::GameInit()
     Init();
     return true;
 }
+
+bool    CDevice::GameFrame()
+{
+    Frame();
+    return true;
+}
+
 bool    CDevice::GameRender()
 {
     float clearColor[] = { 1,0,0,1 };

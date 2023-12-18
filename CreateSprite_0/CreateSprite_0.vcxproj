@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../output/</OutDir>
-    <IntDir>../../output/CreateSprite_0</IntDir>
+    <IntDir>../../output/CreateSprite_0/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CInput.h" />
+    <ClInclude Include="CPlaneShape.h" />
     <ClInclude Include="CTextureMgr.h" />
     <ClInclude Include="CTimer.h" />
     <ClInclude Include="CUIObj.h" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CInput.cpp" />
+    <ClCompile Include="CPlaneShape.cpp" />
     <ClCompile Include="CTextureMgr.cpp" />
     <ClCompile Include="CTimer.cpp" />
     <ClCompile Include="CUIObj.cpp" />

@@ -1,5 +1,7 @@
 #pragma once
-#include "CDevice.h"
+#include <memory>
+#include <map>
+#include <string>
 
 #include "DirectXTex.h"
 
@@ -17,7 +19,7 @@ public:
 public:
 	bool Load(ID3D11Device* pd3dDevice,
 		ID3D11DeviceContext* pd3dContext,
-		std::wstring loadfilename);
+		std::wstring texFileName);
 	bool Release();
 	CTexture() {}
 	virtual ~CTexture() {}
@@ -34,7 +36,7 @@ public:
 		return mgr;
 	}
 	std::map<std::wstring, std::shared_ptr<CTexture>> m_list;
-	CTexture* Load(std::wstring loadfilename);
+	CTexture* Load(std::wstring texFileName);
 	bool Release();
 	void Set(ID3D11Device* pd3dDevice,
 		ID3D11DeviceContext* pd3dContext)
@@ -46,73 +48,4 @@ private:
 	CTextureMgr() {}
 public:
 	~CTextureMgr();
-};
-
-class CUIObj
-{
-public:
-	ID3D11Device* m_pd3dDevice = nullptr;
-	ID3D11DeviceContext* m_pd3dContext = nullptr;
-	RECT					m_rtClient;
-
-
-	std::unique_ptr<DirectX::ScratchImage> m_tex;
-	ID3D11ShaderResourceView* m_pTextureSRV = nullptr;
-
-	std::unique_ptr<DirectX::ScratchImage> m_texChange;
-	ID3D11ShaderResourceView* m_pTextureSRVChange = nullptr;
-
-	std::vector<TVertex>	m_VertexList; // 시스템 메모리
-	std::vector<DWORD>		m_IndexList;
-
-	ID3D11Buffer* m_pVertexbuffer; // 비디오카드 메모리
-	ID3D11Buffer* m_pIndexbuffer; // 비디오카드 메모리
-
-	ID3DBlob* m_pVertexShaderByteCode = nullptr;
-	ID3DBlob* m_pPixelShaderByteCode = nullptr;
-
-	ID3D11VertexShader* m_pVertexShader = nullptr;
-	ID3D11PixelShader* m_pPixelShader = nullptr;
-
-	ID3D11InputLayout* m_pVertexLayout = nullptr;
-
-public:
-	bool CreateVertexBuffer();
-	bool CreateIndexBuffer();
-
-	bool CreateVertexShader();
-	bool CreatePixelShader();
-
-	bool CreateInputLayout();
-
-	virtual bool LoadTexture(std::wstring texFileName);
-	bool LoadTextureChange(std::wstring texFileName);
-public:
-	bool    Init();
-	bool	Load(std::wstring texFileName);
-	bool	PreRender();
-	bool    Render();
-	bool	PostRender();
-	bool    RenderChange();
-	virtual bool    Release();
-};
-
-class CUINumber : public CUIObj
-{
-public:
-	std::unique_ptr<DirectX::ScratchImage> m_texArray[10];
-	ID3D11ShaderResourceView* m_pTextureSRVArray[10] = { nullptr, };
-	bool	LoadTexture(std::wstring texFileName) override;
-	bool    Release()
-	{
-		CUIObj::Release();
-		for (int i = 0; i < 10; i++)
-		{
-			if (m_pTextureSRVArray[i])
-			{
-				m_pTextureSRVArray[i]->Release();
-			}
-		}
-		return true;
-	}
 };
