@@ -127,6 +127,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sprite", "Sprite", "{5E833B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CreateSprite_0", "CreateSprite_0\CreateSprite_0.vcxproj", "{3FDABE8A-596E-4390-8ACE-B05366E10A44}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CreateSprite_1", "CreateSprite_1\CreateSprite_1.vcxproj", "{CFA5CCE6-BA46-4210-B020-E441A8C102EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -535,6 +537,14 @@ Global
 		{3FDABE8A-596E-4390-8ACE-B05366E10A44}.Release|x64.Build.0 = Release|x64
 		{3FDABE8A-596E-4390-8ACE-B05366E10A44}.Release|x86.ActiveCfg = Release|Win32
 		{3FDABE8A-596E-4390-8ACE-B05366E10A44}.Release|x86.Build.0 = Release|Win32
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB}.Debug|x64.ActiveCfg = Debug|x64
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB}.Debug|x64.Build.0 = Debug|x64
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB}.Debug|x86.ActiveCfg = Debug|Win32
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB}.Debug|x86.Build.0 = Debug|Win32
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB}.Release|x64.ActiveCfg = Release|x64
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB}.Release|x64.Build.0 = Release|x64
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB}.Release|x86.ActiveCfg = Release|Win32
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -594,6 +604,7 @@ Global
 		{A650FE72-C311-4D6E-9FE7-8DCCC982B3F7} = {A2BCD85E-E25B-4E31-9FC9-67933454E789}
 		{5E833B56-FB33-435A-B986-C1CACAB5115F} = {6C425B87-90A0-4FFD-BB1A-A07F2661F108}
 		{3FDABE8A-596E-4390-8ACE-B05366E10A44} = {5E833B56-FB33-435A-B986-C1CACAB5115F}
+		{CFA5CCE6-BA46-4210-B020-E441A8C102EB} = {5E833B56-FB33-435A-B986-C1CACAB5115F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E71AF455-8E53-4651-BAD3-91076A1E160F}
