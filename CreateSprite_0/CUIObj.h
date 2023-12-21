@@ -1,73 +1,65 @@
 #pragma once
 #include "CPlaneShape.h"
 
+enum T_CONTROL_STATE
+{
+	T_STATE_NORMAL = 0, // 기본
+	T_STATE_MOUSEOVER, // 가져다대기
+	T_STATE_PRESSED, // 누르기
+	T_STATE_DISABLED,
+
+	T_STATE_NAXSTATE,
+
+	//T_STATE_HOLD,
+	//T_STATE_SELECT,
+	//T_STATE_HIDDEN,
+};
 class CUIObj
 {
 public:
+	W_STR m_csName;
+	RECT m_rtRect;
+	T_CONTROL_STATE m_uiState;
+	BOOL m_isSelected = FALSE;
 
+	std::vector<CTexture*> m_pTexArray;
 	std::vector<TVertex>	m_VertexList; // 시스템 메모리
 	CTexture* m_ptTex = nullptr;
 
 public:
-	bool    Init()
-	{
+	virtual bool    Init();
+	virtual bool    Create(W_STR name) {
 		return true;
 	};
-	bool	Load(std::wstring texFileName)
-	{
-		m_ptTex = CTextureMgr::Get().Load(texFileName);
-		if (m_ptTex != nullptr)
-			return true;
-		return false;
-	};
-	bool	PreRender() {
-		return true;
-	};
-	virtual bool Frame(float fElapsTime) {
-		return true;
-	};
-	virtual bool Render(ID3D11DeviceContext* pd3dContext) {
-		pd3dContext->PSSetShaderResources(0, 1, &m_ptTex->m_pTextureSRV);
-		return true;
-	};
-	bool	PostRender() {
-		return true;
-	};
-	bool    RenderChange() {
-		return true;
-	};
-	virtual bool    Release() {
-		return true;
-	};
+	virtual bool    Create(W_STR name, T_STR_VECTOR texFileName);
+	virtual bool    Create(W_STR name, W_STR texFileName);
+	virtual bool	Load(std::wstring LoadFileName);
+	virtual bool	LoadTexture(T_STR_VECTOR texArray);
+	virtual bool	LoadTexture(std::wstring texFileName);
+	virtual bool	PreRender();
+	virtual bool	Frame(float fElapsTime);
+	virtual bool	Render(ID3D11DeviceContext* pd3dContext);
+	virtual bool	PostRender();
+	virtual bool    Release();
 };
 
 class CUINumber : public CUIObj
 {
 public:
-	std::vector<CTexture*>  m_pTexArray;
 	UINT    m_iApplyIndex = 0;
 	float   m_fTimer = 0.0f;
 	float   m_fAnimationTime = 1.0f;
 	float   m_fStepTime = 0.0f;
 
 public:
-	bool    Init()
-	{
-		return true;
-	};
-	bool    Load(std::wstring texFileName);
+	bool    Create(W_STR name);
+	bool	LoadTexture();
 
-	bool	PreRender() {
-		return true;
-	};
-	bool    Frame(float fElapsTime);
-	bool    Render(ID3D11DeviceContext* pd3dContext);
+public:
+	bool    Create(W_STR name, T_STR_VECTOR texFileName) override;
+	bool	LoadTexture(T_STR_VECTOR texArray) override;
 
-	bool	PostRender() {
-		return true;
-	};
-	virtual bool    Release() {
-		CUIObj::Release();
-		return true;
-	};
+	bool    Frame(float fElapsTime) override;
+	bool    Render(ID3D11DeviceContext* pd3dContext) override;
+	bool    Release() override;
 };

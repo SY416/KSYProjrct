@@ -1,48 +1,6 @@
 #include "Sample.h"
 #include "CTextureMgr.h"
 
-bool Sample::AlphaBlendState()
-{
-    D3D11_BLEND_DESC bsd;
-    ZeroMemory(&bsd, sizeof(bsd));
-    //bsd.AlphaToCoverageEnable = TRUE;
-
-    bsd.RenderTarget[0].BlendEnable = TRUE;
-
-    // rgb
-    // FINALCOLOR = DEST COLOR* (1-SRCALPHA) + SRC COLOR * SRC ALPAH
-    bsd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-    bsd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-    bsd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-
-    // A
-    bsd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-    bsd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-    bsd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-    bsd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;// 葛电 备己夸家俊 单捞磐 历厘(rgba)
-
-
-    HRESULT hr = m_pd3dDevice->CreateBlendState(
-        &bsd,
-        &m_pAlphaBlendEnable);
-    if (FAILED(hr))
-    {
-        return false;
-    }
-
-    bsd.RenderTarget[0].BlendEnable = FALSE;
-    hr = m_pd3dDevice->CreateBlendState(
-        &bsd,
-        &m_pAlphaBlendDisable);
-    if (FAILED(hr))
-    {
-        return false;
-    }
-
-    m_pd3dContext->OMSetBlendState(m_pAlphaBlendEnable, 0, -1);
-
-    return true;
-}
 
 bool Sample::CreatePixelShader()
 {
@@ -112,74 +70,20 @@ bool Sample::CreatePixelShader()
     return true;
 }
 
-bool Sample::CreateSampleState()
-{
-    D3D11_SAMPLER_DESC sd;
-    ZeroMemory(&sd, sizeof(sd));
-    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-
-    HRESULT hr = m_pd3dDevice->CreateSamplerState(
-        &sd,
-        &m_pDefaultSS);
-    if (FAILED(hr))
-    {
-        return false;
-    }
-
-    ZeroMemory(&sd, sizeof(sd));
-    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-
-    hr = m_pd3dDevice->CreateSamplerState(
-        &sd,
-        &m_pDefaultSSPoint);
-    if (FAILED(hr))
-    {
-        return false;
-    }
-    return true;
-}
-
 bool Sample::Init()
 {
-    m_GameTime.Init();
-    CInput::Get().Init();
-
-    CTextureMgr::Get().Set(m_pd3dDevice, m_pd3dContext);
-    
-    AlphaBlendState();
-    CreateSampleState();
     CreatePixelShader();
 
     // v0       v1
     //
     // v3       v2
 
-    m_DefaultPlane.m_pd3dDevice = m_pd3dDevice;
-    m_DefaultPlane.m_pd3dContext = m_pd3dContext;
-    m_DefaultPlane.m_rtClient = m_rtClient;
-
-    m_DefaultPlane.m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
-    m_DefaultPlane.m_VertexList.emplace_back(TVector3(m_rtClient.right, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
-    m_DefaultPlane.m_VertexList.emplace_back(TVector3(m_rtClient.right, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
-    m_DefaultPlane.m_VertexList.emplace_back(TVector3(0.0f, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-    
-    m_DefaultPlane.Init();
-    if (!m_DefaultPlane.Load(L"../../data/default.png"))
-    {
-        return false;
-    }
     m_bk = std::make_shared<CUIObj>();
         m_bk->m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
         m_bk->m_VertexList.emplace_back(TVector3(m_rtClient.right, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
         m_bk->m_VertexList.emplace_back(TVector3(m_rtClient.right, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
         m_bk->m_VertexList.emplace_back(TVector3(0.0f, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-        m_bk->Load(L"../../data/default.png");
+        m_bk->Create(L"BackGround", L"../../data/default.png");
     m_uiList.push_back(m_bk);
 
     //
@@ -189,7 +93,7 @@ bool Sample::Init()
         m_ui->m_VertexList.emplace_back(TVector3(360.0f, 520.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
         m_ui->m_VertexList.emplace_back(TVector3(360.0f, 600.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
         m_ui->m_VertexList.emplace_back(TVector3(0.0f, 600.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-        m_ui->Load(L"../../data/layout.png");
+        m_ui->Create(L"Layout", L"../../data/layout.png");
     m_uiList.push_back(m_ui);
     //
    
@@ -198,10 +102,12 @@ bool Sample::Init()
         m_ui_0->m_VertexList.emplace_back(TVector3(70.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
         m_ui_0->m_VertexList.emplace_back(TVector3(70.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
         m_ui_0->m_VertexList.emplace_back(TVector3(10.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-        if (!m_ui_0->Load(L"../../data/inven.png"))
-        {
-            return false;
-        }
+        T_STR_VECTOR texArrayInven = {
+            L"../../data/inven_nor.png"
+            L"../../data/inven_pus.png"
+            L"../../data/inven_sel.png"
+        };
+        m_ui_0->Create(L"Inventory", texArrayInven);
     m_uiList.push_back(m_ui_0);
     //m_ui_0.Load(L"../../data/inven.png");
     //
@@ -211,7 +117,7 @@ bool Sample::Init()
         m_ui_1->m_VertexList.emplace_back(TVector3(140.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
         m_ui_1->m_VertexList.emplace_back(TVector3(140.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
         m_ui_1->m_VertexList.emplace_back(TVector3(80.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-        m_ui_1->Load(L"../../data/upgrade.png");
+        m_ui_1->Create(L"UpGrade", L"../../data/upgrade.png");
     m_uiList.push_back(m_ui_1);
     //
     m_number = std::make_shared<CUIObj>();
@@ -219,7 +125,7 @@ bool Sample::Init()
         m_number->m_VertexList.emplace_back(TVector3(100.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
         m_number->m_VertexList.emplace_back(TVector3(100.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
         m_number->m_VertexList.emplace_back(TVector3(0.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-        if (!m_number->Load(L"../../data/0.png"))
+        if (!m_number->Create(L"Number", L"../../data/0.png"))
         {
             return false;
         }
@@ -273,8 +179,19 @@ bool    Sample::Render()
     m_pd3dContext->PSSetSamplers(0, 1, &m_pDefaultSS);
     m_pd3dContext->OMSetBlendState(m_pAlphaBlendEnable, 0, -1);
 
-    CInput::Get().Render();
+#pragma region BK
+    m_pd3dContext->UpdateSubresource(m_DefaultPlane.m_pVertexbuffer,
+        0,
+        nullptr,
+        &m_bk->m_VertexList.at(0),
+        0,
+        0);
+    m_DefaultPlane.PreRender();
+    m_bk->Render(m_pd3dContext);
+    m_DefaultPlane.PostRender();
+#pragma endregion BK
 
+    m_pd3dContext->OMSetBlendState(m_pAlphaBlendEnable, 0, -1);
     for (auto data : m_uiList)
     {
         m_pd3dContext->UpdateSubresource(m_DefaultPlane.m_pVertexbuffer,
@@ -284,33 +201,22 @@ bool    Sample::Render()
             0,
             0);
         m_DefaultPlane.PreRender();
-        data->Frame(m_GameTime.m_fSecondPerFrame);
         data->Render(m_pd3dContext);
         m_DefaultPlane.PostRender();
     }
 
-    m_GameTime.Render();
+    m_dxWrite.Draw20(0, 30, m_GameTime.m_outmsg);
 
     return true;
 }
 
 bool    Sample::Release()
 {
-    if (m_pDefaultSS)m_pDefaultSS->Release();
-    if (m_pDefaultSSPoint)m_pDefaultSSPoint->Release();
-    if (m_pAlphaBlendEnable)m_pAlphaBlendEnable->Release();
-    if (m_pAlphaBlendDisable)m_pAlphaBlendDisable->Release();
     if (m_pPixelShaderAlphaTest)m_pPixelShaderAlphaTest->Release();
     for (auto data : m_uiList)
     {
         data->Release();
     }
-
-    m_DefaultPlane.Release();
-
-    CInput::Get().Release();
-
-    m_GameTime.Release();
 
     return true;
 }

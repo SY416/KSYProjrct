@@ -1,5 +1,7 @@
 #include "CWindow.h"
 
+HWND g_hWnd;
+
 bool g_bChange = true;
 int g_iChange = 0;
 

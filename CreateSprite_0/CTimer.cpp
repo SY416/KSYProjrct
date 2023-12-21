@@ -11,8 +11,8 @@ bool CTimer::Frame()
     m_dwTickEnd = timeGetTime();
     DWORD dwElapseTick = m_dwTickEnd - m_dwTickStart;// 경과 시간
 
-    m_fFramePerFrame = dwElapseTick / 1000.0f;
-    m_fGameTimer += m_fFramePerFrame;
+    m_fSecondPerFrame = dwElapseTick / 1000.0f;
+    m_fGameTimer += m_fSecondPerFrame;
 
     m_iFPS++;
     m_dwTime += dwElapseTick;
@@ -29,17 +29,18 @@ bool CTimer::Frame()
 
 bool CTimer::Render()
 {
-    std::wstring outmsg = L"게임 경과 시간: ";
-    outmsg += std::to_wstring(m_fGameTimer);
-    outmsg += L" ";
-    outmsg += L" 1 프레임 경과 시간: ";
-    outmsg += std::to_wstring(m_fSecondPerFrame);
-    outmsg += L" ";
-    outmsg += L"초당 프레임: ";
-    outmsg += m_msg;
-    outmsg += L"\n";
+    m_outmsg.clear();
+    m_outmsg = L"게임 경과 시간: ";
+    m_outmsg += std::to_wstring(m_fGameTimer);
+    m_outmsg += L" ";
+    m_outmsg += L" 1 프레임 경과 시간: ";
+    m_outmsg += std::to_wstring(m_fSecondPerFrame);
+    m_outmsg += L" ";
+    m_outmsg += L"초당 프레임: ";
+    m_outmsg += m_msg;
+    m_outmsg += L"\n";
 
-    OutputDebugString(outmsg.c_str());
+    OutputDebugString(m_outmsg.c_str());
     return true;
 }
 

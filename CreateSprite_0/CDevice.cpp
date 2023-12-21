@@ -1,5 +1,5 @@
 #include "CDevice.h"
-bool    CDevice::GameInit()
+bool    CDevice::CreateDevice()
 {
     D3D_DRIVER_TYPE DriverType = D3D_DRIVER_TYPE_HARDWARE;
     UINT Flags = 0;
@@ -60,30 +60,11 @@ bool    CDevice::GameInit()
     vp.TopLeftY = 0;
     m_pd3dContext->RSSetViewports(1, &vp);
 
-    Init();
     return true;
 }
 
-bool    CDevice::GameFrame()
+bool    CDevice::DeleteDevice()
 {
-    Frame();
-    return true;
-}
-
-bool    CDevice::GameRender()
-{
-    float clearColor[] = { 1,0,0,1 };
-    m_pd3dContext->ClearRenderTargetView(m_pRenderTargetView, clearColor);
-
-    Render();
-
-    m_pSwapChain->Present(0, 0);
-    return true;
-}
-bool    CDevice::GameRelease()
-{
-    Release();
-
     if (m_pd3dDevice != nullptr) m_pd3dDevice->Release();
     if (m_pd3dContext) m_pd3dContext->Release();
     if (m_pRenderTargetView) m_pRenderTargetView->Release();

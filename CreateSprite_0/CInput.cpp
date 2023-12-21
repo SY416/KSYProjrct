@@ -1,4 +1,5 @@
 #include "CInput.h"
+#include "Std.h"
 
 bool CInput::Init()
 {
@@ -8,6 +9,9 @@ bool CInput::Init()
 
 bool CInput::Frame()
 {
+	GetCursorPos(&m_ptMouse); // 화면 좌표상 마우스
+	ScreenToClient(g_hWnd, &m_ptMouse);
+
 	for (DWORD dwKey = 0; dwKey < 256; dwKey++)
 	{
 		SHORT sKey = ::GetAsyncKeyState(dwKey);

@@ -39,6 +39,15 @@
     <ClCompile Include="CPlaneShape.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameCore.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CDxWrite.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CDevice.h">
@@ -63,6 +72,18 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="CPlaneShape.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Std.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCore.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffect.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CDxWrite.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

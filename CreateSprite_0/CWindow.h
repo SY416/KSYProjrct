@@ -1,5 +1,5 @@
 #pragma once
-#include <Windows.h>
+#include "Std.h"
 #pragma comment (lib, "winmm.lib")
 
 extern bool g_bChange;

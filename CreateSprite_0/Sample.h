@@ -1,15 +1,9 @@
 #pragma once
-#include "CUIObj.h"
-#include "CInput.h"
-#include "CTimer.h"
+#include "GameCore.h"
 
-class Sample : public CDevice
+class Sample : public GameCore
 {
-	CTimer				m_GameTime;
-	ID3D11SamplerState* m_pDefaultSS;
-	ID3D11SamplerState* m_pDefaultSSPoint;
-	ID3D11BlendState* m_pAlphaBlendEnable;
-	ID3D11BlendState* m_pAlphaBlendDisable;
+public:
 	ID3D11PixelShader* m_pPixelShaderAlphaTest = nullptr;
 
 	std::vector<std::shared_ptr<CUIObj>> m_uiList;
@@ -19,7 +13,7 @@ class Sample : public CDevice
 	std::shared_ptr<CUIObj> m_ui_1;
 	std::shared_ptr<CUIObj> m_number;
 	
-	CPlaneShape		m_DefaultPlane;
+	bool	CreatePixelShader();
 
 public:
 	bool Init() override;
@@ -27,8 +21,6 @@ public:
 	bool Render() override;
 	bool Release() override;
 
-	bool    AlphaBlendState();
-	bool	CreatePixelShader();
-	bool	CreateSampleState();
+	
 };
 

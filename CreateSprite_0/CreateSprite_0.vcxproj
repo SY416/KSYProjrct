@@ -145,22 +145,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CDevice.h" />
+    <ClInclude Include="CDxWrite.h" />
+    <ClInclude Include="CEffect.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CPlaneShape.h" />
     <ClInclude Include="CTextureMgr.h" />
     <ClInclude Include="CTimer.h" />
     <ClInclude Include="CUIObj.h" />
     <ClInclude Include="CWindow.h" />
+    <ClInclude Include="GameCore.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="Std.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CDevice.cpp" />
+    <ClCompile Include="CDxWrite.cpp" />
+    <ClCompile Include="CEffect.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CPlaneShape.cpp" />
     <ClCompile Include="CTextureMgr.cpp" />
     <ClCompile Include="CTimer.cpp" />
     <ClCompile Include="CUIObj.cpp" />
     <ClCompile Include="CWindow.cpp" />
+    <ClCompile Include="GameCore.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>

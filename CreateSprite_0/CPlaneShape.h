@@ -42,11 +42,13 @@ struct TVertex
 class CPlaneShape
 {
 public:
+	W_STR m_csName;
 	ID3D11Device* m_pd3dDevice = nullptr;
 	ID3D11DeviceContext* m_pd3dContext = nullptr;
 	RECT					m_rtClient;
 
 	CTexture* m_ptTex;
+	std::vector<CTexture*>  m_pTexArray;
 
 	std::vector<TVertex>	m_VertexList; // 시스템 메모리
 	std::vector<DWORD>		m_IndexList;
@@ -71,14 +73,17 @@ public:
 
 	bool CreateInputLayout();
 
-	virtual bool LoadTexture(std::wstring texFileName);
+	virtual bool	LoadTexture(T_STR_VECTOR texFileName);
+	virtual bool	LoadTexture(std::wstring texFileName);
 	
 public:
-	bool    Init();
-	bool	Load(std::wstring texFileName);
-	bool	PreRender();
-	bool    Render();
-	bool	PostRender();
+	virtual bool    Init();
+	virtual bool    Create(W_STR name, T_STR_VECTOR texFileName);
+	virtual bool    Create(W_STR name, W_STR texFileName);
+	virtual bool	PreRender();
+	virtual bool	Frame();
+	virtual bool    Render();
+	virtual bool	PostRender();
 	virtual bool    Release();
 	
 };

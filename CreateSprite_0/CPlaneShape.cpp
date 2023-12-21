@@ -8,6 +8,16 @@ bool CPlaneShape::LoadTexture(std::wstring texFileName)
     return false;
 }
 
+bool CPlaneShape::LoadTexture(T_STR_VECTOR texArray)
+{
+    for (int i = 0; i < texArray.size(); i++)
+    {
+        m_pTexArray.push_back(CTextureMgr::Get().Load(texArray[i]));
+    }
+    m_ptTex = m_pTexArray[0];
+    return true;
+}
+
 bool CPlaneShape::CreateVertexBuffer()
 {
     D3D11_BUFFER_DESC bd;
@@ -167,8 +177,10 @@ bool CPlaneShape::Init()
     return true;
 }
 
-bool CPlaneShape::Load(std::wstring texFileName)
+bool CPlaneShape::Create(W_STR name, T_STR_VECTOR texFileName)
 {
+    m_csName = name;
+
     m_IndexList.push_back(0);
     m_IndexList.push_back(1);
     m_IndexList.push_back(2);
@@ -198,6 +210,46 @@ bool CPlaneShape::Load(std::wstring texFileName)
 
     return true;
 }
+
+bool CPlaneShape::Create(W_STR name, W_STR texFileName)
+{
+    m_csName = name;
+
+    m_IndexList.push_back(0);
+    m_IndexList.push_back(1);
+    m_IndexList.push_back(2);
+
+    m_IndexList.push_back(2);
+    m_IndexList.push_back(3);
+    m_IndexList.push_back(0);
+
+    if (!CreateVertexBuffer() || !CreateIndexBuffer())
+    {
+        return false;
+    }
+
+    if (!CreateVertexShader() || !CreatePixelShader())
+    {
+        return false;
+    }
+
+    if (!CreateInputLayout())
+    {
+        return false;
+    }
+    if (!LoadTexture(texFileName))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool CPlaneShape::Frame()
+{
+    return true;
+}
+
 bool    CPlaneShape::PreRender()
 {
     m_pd3dContext->PSSetShaderResources(0, 1, &m_ptTex->m_pTextureSRV);
@@ -228,24 +280,8 @@ bool    CPlaneShape::PostRender()
 }
 bool    CPlaneShape::Render()
 {
-    m_pd3dContext->PSSetShaderResources(0, 1, &m_ptTex->m_pTextureSRV);
-    m_pd3dContext->VSSetShader(m_pVertexShader, NULL, 0);
-    m_pd3dContext->PSSetShader(m_pPixelShader, NULL, 0);
-    m_pd3dContext->IASetInputLayout(m_pVertexLayout);
-    m_pd3dContext->IASetIndexBuffer(m_pIndexbuffer, DXGI_FORMAT_R32_UINT, 0);
-
-    UINT pStrides = sizeof(TVertex);
-    UINT pOffsets = 0;
-
-    m_pd3dContext->IASetVertexBuffers(
-        0,
-        1,
-        &m_pVertexbuffer,
-        &pStrides,
-        &pOffsets);
-
-    m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    m_pd3dContext->DrawIndexed(m_IndexList.size(), 0, 0);
+    PreRender();
+    PostRender();
 
     return true;
 }
