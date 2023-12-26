@@ -1,12 +1,5 @@
 #pragma once
 #include "CWindow.h"
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <string>
-#include <memory>
-#include <vector>
-#include <list>
-#include <map>
 
 class CDevice : public CWindow
 {

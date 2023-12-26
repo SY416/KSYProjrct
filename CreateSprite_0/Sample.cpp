@@ -106,11 +106,14 @@ bool Sample::Init()
             L"../../data/inven_nor.png"
             L"../../data/inven_pus.png"
             L"../../data/inven_sel.png"
+            L"../../data/inven_dis.png"
         };
-        m_ui_0->Create(L"Inventory", texArrayInven);
+        if (!m_ui_0->Create(L"Inventory", texArrayInven))
+        {
+            return false;
+        }
     m_uiList.push_back(m_ui_0);
-    //m_ui_0.Load(L"../../data/inven.png");
-    //
+   
     
     m_ui_1 = std::make_shared<CUIObj>();
         m_ui_1->m_VertexList.emplace_back(TVector3(80.0f, 530.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
@@ -130,6 +133,16 @@ bool Sample::Init()
             return false;
         }
     m_uiList.push_back(m_number);
+
+    m_EffectA = std::make_shared<CEffect>();
+    m_EffectA->m_VertexList.emplace_back(TVector3(200, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+    m_EffectA->m_VertexList.emplace_back(TVector3(300.0f, 100.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+    m_EffectA->m_VertexList.emplace_back(TVector3(300.0f, 200, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+    m_EffectA->m_VertexList.emplace_back(TVector3(200.0f, 200, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+    if (!m_EffectA->Create(L"EffectA", L"../../data/effect.png", 4, 4, 1.0f))
+    {
+        return false;
+    }
     return true;
 }
 
@@ -171,6 +184,13 @@ bool    Sample::Frame()
         g_iChange++;
         if (g_iChange >= 10) g_iChange = 0;
     }
+
+    for (auto data : m_uiList)
+    {
+        data->Frame(m_GameTime.m_fSecondPerFrame);
+    }
+    m_EffectA->Frame(m_GameTime.m_fSecondPerFrame);
+
     return true;
 }
 
@@ -201,9 +221,24 @@ bool    Sample::Render()
             0,
             0);
         m_DefaultPlane.PreRender();
-        data->Render(m_pd3dContext);
+            data->Render(m_pd3dContext);
         m_DefaultPlane.PostRender();
     }
+
+#pragma region EFFECT
+
+    m_pd3dContext->UpdateSubresource(m_DefaultPlane.m_pVertexbuffer,
+        0,
+        nullptr,
+        &m_EffectA->m_VertexList.at(0),
+        0,
+        0);
+    m_DefaultPlane.PreRender();
+    m_pd3dContext->PSSetShader(m_pPixelShaderAlphaTest, NULL, 0);
+    m_EffectA->Render(m_pd3dContext);
+    m_DefaultPlane.PostRender();
+
+#pragma endregion EFFECT
 
     m_dxWrite.Draw20(0, 30, m_GameTime.m_outmsg);
 

@@ -1,0 +1,319 @@
+#include "TextureMgr.h"
+
+bool TextureMgr::LoadTexture(std::wstring texFileName)
+{
+    m_tex = std::make_unique< DirectX::ScratchImage>();
+    DirectX::TexMetadata metadata;
+    HRESULT hr = DirectX::GetMetadataFromWICFile(texFileName.c_str(), DirectX::WIC_FLAGS_NONE, metadata);
+    if (SUCCEEDED(hr))
+    {
+        hr = DirectX::LoadFromWICFile(texFileName.c_str(), DirectX::WIC_FLAGS_NONE, &metadata, *m_tex);
+        if (SUCCEEDED(hr))
+        {
+            hr = DirectX::CreateShaderResourceView(
+                m_pd3dDevice,
+                m_tex->GetImages(),
+                m_tex->GetImageCount(),
+                metadata,
+                &m_pTextureSRV);
+            if (SUCCEEDED(hr))
+            {
+                return true;
+            }
+        }
+    }
+
+    //DDS 다이렉트SDK 전용 압축포맷
+    hr = DirectX::GetMetadataFromDDSFile(texFileName.c_str(), DirectX::DDS_FLAGS_NONE, metadata);
+    if (SUCCEEDED(hr))
+    {
+        hr = DirectX::LoadFromDDSFile(texFileName.c_str(), DirectX::DDS_FLAGS_NONE, &metadata, *m_tex);
+        if (SUCCEEDED(hr))
+        {
+            hr = DirectX::CreateShaderResourceView(
+                m_pd3dDevice,
+                m_tex->GetImages(),
+                m_tex->GetImageCount(),
+                metadata,
+                &m_pTextureSRV);
+            if (SUCCEEDED(hr))
+            {
+                return true;
+            }
+        }
+    }
+
+    hr = DirectX::GetMetadataFromTGAFile(texFileName.c_str(), DirectX::TGA_FLAGS_NONE, metadata);
+    if (SUCCEEDED(hr))
+    {
+        hr = DirectX::LoadFromTGAFile(texFileName.c_str(), DirectX::TGA_FLAGS_NONE, &metadata, *m_tex);
+        if (SUCCEEDED(hr))
+        {
+            hr = DirectX::CreateShaderResourceView(
+                m_pd3dDevice,
+                m_tex->GetImages(),
+                m_tex->GetImageCount(),
+                metadata,
+                &m_pTextureSRV);
+            if (SUCCEEDED(hr))
+            {
+                return true;
+            }
+        }
+    }
+
+    hr = DirectX::GetMetadataFromHDRFile(texFileName.c_str(), metadata);
+    if (SUCCEEDED(hr))
+    {
+        hr = DirectX::LoadFromHDRFile(texFileName.c_str(), &metadata, *m_tex);
+        if (SUCCEEDED(hr))
+        {
+            hr = DirectX::CreateShaderResourceView(
+                m_pd3dDevice,
+                m_tex->GetImages(),
+                m_tex->GetImageCount(),
+                metadata,
+                &m_pTextureSRV);
+            if (SUCCEEDED(hr))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool TextureMgr::CreateVertexBuffer()
+{
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
+    bd.ByteWidth = m_VertexList.size() * sizeof(TVertex);//메모리 할당크기
+    bd.Usage = D3D11_USAGE_DEFAULT;//버퍼의 저장소 및 접근권한 설정
+    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;//버퍼의 용도
+    /*UINT CPUAccessFlags;
+    UINT MiscFlags;
+    UINT StructureByteStride;*/
+
+    D3D11_SUBRESOURCE_DATA sd;
+    ZeroMemory(&sd, sizeof(D3D11_SUBRESOURCE_DATA));
+    sd.pSysMem = &m_VertexList.at(0);
+    /*UINT SysMemPitch;
+    UINT SysMemSlicePitch;*/
+
+
+    HRESULT hr = m_pd3dDevice->CreateBuffer(&bd, &sd, &m_pVertexbuffer);
+
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool TextureMgr::CreateIndexBuffer()
+{
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(bd));
+    bd.ByteWidth = m_IndexList.size() * sizeof(DWORD);
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+    D3D11_SUBRESOURCE_DATA sd;
+    ZeroMemory(&sd, sizeof(sd));
+    sd.pSysMem = &m_IndexList.at(0);
+
+    HRESULT hr = m_pd3dDevice->CreateBuffer(&bd, &sd, &m_pIndexbuffer);
+
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool TextureMgr::CreateVertexShader()
+{
+    ID3DBlob* ppErrorMsg;
+    HRESULT hr = D3DCompileFromFile(
+        L"Shader.txt",
+        nullptr,
+        nullptr,
+        "VS",
+        "vs_5_0",
+        0,
+        0,
+        &m_pVertexShaderByteCode,
+        &ppErrorMsg);
+
+    if (FAILED(hr))
+    {
+        MessageBoxA(NULL, (char*)ppErrorMsg->GetBufferPointer(), "Error", MB_OK);
+        if (ppErrorMsg)ppErrorMsg->Release();
+        return false;
+    }
+    if (ppErrorMsg)ppErrorMsg->Release();
+
+    hr = m_pd3dDevice->CreateVertexShader(
+        m_pVertexShaderByteCode->GetBufferPointer(),
+        m_pVertexShaderByteCode->GetBufferSize(),
+        nullptr,
+        &m_pVertexShader);
+
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool TextureMgr::CreatePixelShader()
+{
+    ID3DBlob* ppErrorMsg;
+    HRESULT hr = D3DCompileFromFile(
+        L"Shader.txt",
+        nullptr,
+        nullptr,
+        "PS",
+        "ps_5_0",
+        0,
+        0,
+        &m_pPixelShaderByteCode,
+        &ppErrorMsg);
+
+    if (FAILED(hr))
+    {
+        MessageBoxA(NULL, (char*)ppErrorMsg->GetBufferPointer(), "Error", MB_OK);
+        if (ppErrorMsg)ppErrorMsg->Release();
+        return false;
+    }
+    if (ppErrorMsg)ppErrorMsg->Release();
+
+    hr = m_pd3dDevice->CreatePixelShader(
+        m_pPixelShaderByteCode->GetBufferPointer(),
+        m_pPixelShaderByteCode->GetBufferSize(),
+        nullptr,
+        &m_pPixelShader);
+
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool TextureMgr::CreateInputLayout()
+{
+    const D3D11_INPUT_ELEMENT_DESC layout[] =
+    {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEX", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+
+    /*D3D11_INPUT_ELEMENT_DESC pInputElementDescs;
+    LPCSTR SemanticName;
+    UINT SemanticIndex;
+    DXGI_FORMAT Format;
+    UINT InputSlot;
+    UINT AlignedByteOffset;
+    D3D11_INPUT_CLASSIFICATION InputSlotClass;
+    UINT InstanceDataStepRate;*/
+
+    UINT iNumLayout = sizeof(layout) / sizeof(layout[0]);
+
+    HRESULT hr = m_pd3dDevice->CreateInputLayout(
+        layout,
+        iNumLayout,
+        m_pVertexShaderByteCode->GetBufferPointer(),
+        m_pVertexShaderByteCode->GetBufferSize(),
+        &m_pVertexLayout);
+
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool TextureMgr::Init()
+{
+    m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+    m_VertexList.emplace_back(TVector3(1366, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+    m_VertexList.emplace_back(TVector3(1366, 768, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+    m_VertexList.emplace_back(TVector3(0.0f, 768, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+    
+    m_IndexList.push_back(0);
+    m_IndexList.push_back(1);
+    m_IndexList.push_back(2);
+
+    m_IndexList.push_back(2);
+    m_IndexList.push_back(3);
+    m_IndexList.push_back(0);
+
+    if (!CreateVertexBuffer() || !CreateIndexBuffer())
+    {
+        return false;
+    }
+
+    if (!CreateVertexShader() || !CreatePixelShader())
+    {
+        return false;
+    }
+
+    if (!CreateInputLayout())
+    {
+        return false;
+    }
+    if (!LoadTexture(L"bk.png"))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool TextureMgr::Render()
+{
+    m_pd3dDeviceContext->PSSetShaderResources(0, 1, &m_pTextureSRV);
+    m_pd3dDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
+    m_pd3dDeviceContext->PSSetShader(m_pPixelShader, NULL, 0);
+    m_pd3dDeviceContext->IASetInputLayout(m_pVertexLayout);
+    m_pd3dDeviceContext->IASetIndexBuffer(m_pIndexbuffer, DXGI_FORMAT_R32_UINT, 0);
+
+    UINT pStrides = sizeof(TVertex);
+    UINT pOffsets = 0;
+
+    m_pd3dDeviceContext->IASetVertexBuffers(
+        0,
+        1,
+        &m_pVertexbuffer,
+        &pStrides,
+        &pOffsets);
+
+    m_pd3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_pd3dDeviceContext->DrawIndexed(m_IndexList.size(), 0, 0);
+
+    return true;
+}
+
+bool TextureMgr::Release()
+{
+    if (m_pTextureSRV)m_pTextureSRV->Release();
+    if (m_pVertexbuffer)m_pVertexbuffer->Release();
+    if (m_pIndexbuffer)m_pIndexbuffer->Release();
+
+    if (m_pVertexShaderByteCode)m_pVertexShaderByteCode->Release();
+    if (m_pPixelShaderByteCode)m_pPixelShaderByteCode->Release();
+
+    if (m_pVertexShader)m_pVertexShader->Release();
+    if (m_pPixelShader)m_pPixelShader->Release();
+
+    if (m_pVertexLayout)m_pVertexLayout->Release();
+    return true;
+}

@@ -188,11 +188,11 @@ bool Sample::Init()
     m_ui_0.m_VertexList.emplace_back(TVector3(10.0f, 590.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
     
     m_ui_0.Init();
-    if (!m_ui_0.Load(L"../../data/inven.png"))
+    if (!m_ui_0.Load(L"../../data/inven_nor.png"))
     {
         return false;
     }
-    m_ui_0.LoadTextureChange(L"../../data/inven_2.png");
+    m_ui_0.LoadTextureChange(L"../../data/inven_pus.png");
     //m_ui_0.Load(L"../../data/inven.png");
     //
     m_ui_1.m_pd3dDevice = m_pd3dDevice;

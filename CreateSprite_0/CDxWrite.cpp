@@ -44,6 +44,10 @@ bool CDxWrite::Init(IDXGISurface* dxgiSurface)
 		30,
 		L"ko-kr",
 		&m_pTextFormat);
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
 	hr = m_pDWriteFactory->CreateTextFormat(
 		L"°íµñ",
@@ -54,8 +58,12 @@ bool CDxWrite::Init(IDXGISurface* dxgiSurface)
 		20,
 		L"ko-kr",
 		&m_pTextFormat20);
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
-	FLOAT x, y;
+	//FLOAT x, y;
 	UINT dpi = GetDpiForWindow(g_hWnd);
 	D2D1_RENDER_TARGET_PROPERTIES rtp;
 
@@ -70,7 +78,11 @@ bool CDxWrite::Init(IDXGISurface* dxgiSurface)
 	hr = m_pd2dFactory->CreateDxgiSurfaceRenderTarget(
 		dxgiSurface,
 		&rtp,
-		&m_pRT);
+		&m_pRT);//m_pRT null
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
 	D2D1_COLOR_F color;
 	color.r = 0.0f;
@@ -80,7 +92,11 @@ bool CDxWrite::Init(IDXGISurface* dxgiSurface)
 	
 	hr = m_pRT->CreateSolidColorBrush(
 		color,
-		&m_pDefaultBrush);//NULL
+		&m_pDefaultBrush);
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
 	return true;
 }

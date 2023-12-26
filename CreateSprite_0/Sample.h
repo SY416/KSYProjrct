@@ -12,6 +12,7 @@ public:
 	std::shared_ptr<CUIObj> m_ui_0;
 	std::shared_ptr<CUIObj> m_ui_1;
 	std::shared_ptr<CUIObj> m_number;
+	std::shared_ptr<CEffect> m_EffectA;
 	
 	bool	CreatePixelShader();
 
@@ -20,7 +21,5 @@ public:
 	bool Frame() override;
 	bool Render() override;
 	bool Release() override;
-
-	
 };
 

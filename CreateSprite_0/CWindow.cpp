@@ -40,6 +40,7 @@ BOOL CWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)
         return FALSE;
     }
     m_hWnd = hWnd;
+    g_hWnd = hWnd;
 
     
     ::GetWindowRect(m_hWnd, &m_rtWindow);

@@ -49,7 +49,7 @@ bool CUIObj::LoadTexture(T_STR_VECTOR texArray)
     {
         m_pTexArray.push_back(CTextureMgr::Get().Load(texArray[i]));
     }
-    m_ptTex = m_pTexArray[0];
+    m_ptTex = m_pTexArray[m_uiState];
     return true;
 }
 
