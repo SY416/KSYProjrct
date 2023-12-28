@@ -6,6 +6,9 @@ public:
 	HWND		m_hWnd;// 핸들 = 식별번호(ID), 각각의 창과 버튼에 구분하기 위한 핸들이 있음
 	HINSTANCE	m_hInstance; // instance handle, 윈도우즈 운영체제에서 실행되는 프로그램들을 구별하기 위한 ID 값
 
+	RECT        m_rtWindow;
+	RECT		m_rtClient;
+
 public:
 	void SetWindow(HINSTANCE hInstance, int nCmdShow);
 	void Run();

@@ -21,7 +21,7 @@ bool Sample::AlphaBlendState()
     bsd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;// 모든 구성요소에 데이터 저장(rgba)
 
 
-    HRESULT hr = m_pd3dDevice->CreateBlendState(
+    HRESULT hr = m_pd3dDevice->CreateBlendState( // 알파 값과 rgb값을 섞어줌
         &bsd,
         &m_pAlphaBlendEnable);
     if (FAILED(hr))
@@ -38,7 +38,7 @@ bool Sample::AlphaBlendState()
         return false;
     }
 
-    m_pd3dContext->OMSetBlendState(m_pAlphaBlendEnable, 0, -1);
+    m_pd3dContext->OMSetBlendState(m_pAlphaBlendEnable, 0, -1);// 블렌드 과정은 마지막 단계인 output merging에서 수행됨
 
     return true;
 }
@@ -111,11 +111,11 @@ bool Sample::CreatePixelShader()
     return true;
 }
 
-bool Sample::CreateSampleState()
+bool Sample::CreateSampleState()// 필터링 함수
 {
     D3D11_SAMPLER_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
-    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;// 선형 필터링, 이웃한 픽셀사이에 선을 그어 필터링
     sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -129,7 +129,7 @@ bool Sample::CreateSampleState()
     }
 
     ZeroMemory(&sd, sizeof(sd));
-    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT; // 근접점 필터링, 이웃한 픽셀을 보간하여 필터링
     sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -164,7 +164,7 @@ bool Sample::Init()
     m_bk.m_VertexList.emplace_back(TVector3(0.0f, m_rtClient.bottom, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
     
     m_bk.Init();
-    m_bk.Load(L"../../data/default.png");
+    m_bk.Load(L"../../data/bk.png");
     //
     m_ui.m_pd3dDevice = m_pd3dDevice;
     m_ui.m_pd3dContext = m_pd3dContext;

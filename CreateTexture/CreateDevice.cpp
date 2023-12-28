@@ -287,7 +287,7 @@ bool CreateDevice::Init()
     {
         return false;
     }
-    if (LoadTexture(L"bk.png"))
+    if (LoadTexture(L"../../data/bk.png"))
     {
         return false;
     }

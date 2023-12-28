@@ -1,11 +1,12 @@
 #pragma once
 #include "Device.h"
 #include "TextureMgr.h"
+#include "UIobj.h"
 
 class Core : public Device
 {
 public:
-	TextureMgr m_DefaultTexture;
+	PlaneShape m_DefaultPlane;
 
 public:
 	virtual bool Init() {

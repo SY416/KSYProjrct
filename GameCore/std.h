@@ -13,6 +13,8 @@
 #pragma comment (lib, "DirectXTex.lib")
 #pragma comment (lib, "winmm.lib")
 
+extern HWND g_hWnd;
+
 #define randf(x) (x*rand()/(float)RAND_MAX)
 #define randf2(x,off) (off+x*rand()/(float)RAND_MAX)
 #define randstep(fMin,fMax) (fMin+((float)fMax-(float)fMin)*rand()/(float)RAND_MAX)

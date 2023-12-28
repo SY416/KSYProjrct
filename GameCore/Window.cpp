@@ -1,5 +1,7 @@
 #include "Window.h"
 
+HWND g_hWnd;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	// 윈도우 메세지는 WM_로 시작
@@ -31,6 +33,11 @@ BOOL Window::InitInstance(HINSTANCE hInstance, int nCmdShow)
 		return FALSE;
 	}
 	m_hWnd = hWnd;
+	g_hWnd = hWnd;
+
+	::GetWindowRect(m_hWnd, &m_rtWindow);
+	::GetClientRect(m_hWnd, &m_rtClient);
+
 	ShowWindow(hWnd, nCmdShow);//윈도우의 표시 상태 설정
 	UpdateWindow(hWnd);
 
