@@ -9,6 +9,7 @@ struct TInitSet
 	TVector2 size;
 };
 
+
 class Block : public PlaneShape
 {
 public:

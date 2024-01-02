@@ -62,15 +62,7 @@ bool Player::Frame()
     {
         m_vPos.x = m_vPos.x + g_fSecPerFrame * 100;
     }
-    if (Input::Get().m_dwKeyState[VK_SPACE] == KEY_PUSH)
-    {
-        m_fJpy = m_vPos.y + m_InitSet.size.y - 100;
-        m_vPos.y = m_vPos.y - g_fSecPerFrame * 300;
-    }
-    else if (m_vPos.y + m_InitSet.size.y < 768)
-    {
-        m_vPos.y = m_vPos.y + g_fSecPerFrame * 300;
-    }
+    
     if (Input::Get().m_dwKeyState[VK_DOWN] == KEY_UP)
     {
     }

@@ -6,7 +6,6 @@ class Player : public Block
 	
 public:
 	TVector2    m_vPos;
-	float  m_fJpy = 768;
 public:
 	
 	bool   Frame() override;
