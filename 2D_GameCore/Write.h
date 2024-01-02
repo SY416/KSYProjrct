@@ -7,7 +7,7 @@
 #pragma comment (lib, "d2d1.lib")
 #pragma comment (lib, "dwrite.lib")
 
-class TDxWrite
+class Write
 {
 public:
     ID2D1RenderTarget* m_pRT = nullptr;

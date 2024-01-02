@@ -1,21 +1,21 @@
-#include "TPlaneShape.h"
-bool    TPlaneShape::LoadTexture(std::wstring texFileName)
+#include "PlaneShape.h"
+bool    PlaneShape::LoadTexture(std::wstring texFileName)
 {
-    m_ptTex = TTextureMgr::Get().Load(texFileName);
+    m_ptTex = TextureMgr::Get().Load(texFileName);
     if (m_ptTex != nullptr)
         return true;
     return false;
 };
-bool	TPlaneShape::LoadTexture(T_STR_VECTOR texArray)
+bool	PlaneShape::LoadTexture(T_STR_VECTOR texArray)
 {
     for (int i = 0; i < texArray.size(); i++)
     {
-        m_pTexArray.push_back(TTextureMgr::Get().Load(texArray[i]));
+        m_pTexArray.push_back(TextureMgr::Get().Load(texArray[i]));
     }
     m_ptTex = m_pTexArray[0];
     return false;
 }
-ID3D11Buffer* TPlaneShape::CreateBuffer(UINT ByteWidth, UINT BindFlags, void** pAddress)
+ID3D11Buffer* PlaneShape::CreateBuffer(UINT ByteWidth, UINT BindFlags, void** pAddress)
 {
     ID3D11Buffer* pBuffer = nullptr;
     D3D11_BUFFER_DESC bd;
@@ -40,7 +40,7 @@ ID3D11Buffer* TPlaneShape::CreateBuffer(UINT ByteWidth, UINT BindFlags, void** p
     }
     return pBuffer;
 }
-ID3DBlob* TPlaneShape::CreateShader(
+ID3DBlob* PlaneShape::CreateShader(
     LPCWSTR pFileName,
     LPCSTR pEntrypoint,
     LPCSTR pTarget)
@@ -66,7 +66,7 @@ ID3DBlob* TPlaneShape::CreateShader(
     if (ppErrorMsgs) ppErrorMsgs->Release();
     return pByteCode;
 }
-bool TPlaneShape::CreateVertexBuffer()
+bool PlaneShape::CreateVertexBuffer()
 {
     UINT iSize = m_VertexList.size() * sizeof(TVertex);
     D3D11_BUFFER_DESC bd;
@@ -87,7 +87,7 @@ bool TPlaneShape::CreateVertexBuffer()
     }
     return true;
 }
-bool TPlaneShape::CreateIndexBuffer()
+bool PlaneShape::CreateIndexBuffer()
 {
     UINT iSize = m_IndexList.size() * sizeof(DWORD);
     D3D11_BUFFER_DESC bd;
@@ -108,7 +108,7 @@ bool TPlaneShape::CreateIndexBuffer()
     }
     return true;
 }
-bool TPlaneShape::CreateVertexShader()
+bool PlaneShape::CreateVertexShader()
 {
     ID3DBlob* ppErrorMsgs = nullptr;
     HRESULT hr = D3DCompileFromFile(
@@ -141,7 +141,7 @@ bool TPlaneShape::CreateVertexShader()
 
     return true;
 }
-bool TPlaneShape::CreatePixelShader()
+bool PlaneShape::CreatePixelShader()
 {
     ID3DBlob* ppErrorMsgs = nullptr;
     HRESULT hr = D3DCompileFromFile(
@@ -176,7 +176,7 @@ bool TPlaneShape::CreatePixelShader()
     }
     return true;
 }
-bool TPlaneShape::CreateInputLayout()
+bool PlaneShape::CreateInputLayout()
 {
     const D3D11_INPUT_ELEMENT_DESC layout[] =
     {
@@ -208,60 +208,11 @@ bool TPlaneShape::CreateInputLayout()
 
     return true;
 }
-bool    TPlaneShape::Init()
+bool    PlaneShape::Init()
 {
     return true;
 }
-bool    TPlaneShape::Create(W_STR name, T_STR_VECTOR texFileName)
-{
-    m_csName = name;
-    //// v0       v1
-    ////
-    //// v3       v2
-    //m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(0, 1, 0, 1), TVector2(0.0f, 0.0f));      // 0
-    //m_VertexList.emplace_back(TVector3(m_rtClient.right, 0.0f, 0.5f), TVector4(0, 1, 0, 1), TVector2(1.0f, 0.0f));    // 1
-    //m_VertexList.emplace_back(TVector3(m_rtClient.right, m_rtClient.bottom, 0.5f), TVector4(0, 0, 1, 1), TVector2(1.0f, 1.0f));  // 2
-    //m_VertexList.emplace_back(TVector3(0.0f, m_rtClient.bottom, 0.5f), TVector4(0, 0, 1, 1), TVector2(0.0f, 1.0f));    // 3
-    m_IndexList.push_back(0);
-    m_IndexList.push_back(1);
-    m_IndexList.push_back(2);
-
-    m_IndexList.push_back(2);
-    m_IndexList.push_back(3);
-    m_IndexList.push_back(0);
-
-    if (!CreateVertexBuffer() || !CreateIndexBuffer())
-    {
-        return false;
-    }
-    if (!CreateVertexShader() || !CreatePixelShader())
-    {
-        return false;
-    }
-
-    if (!CreateInputLayout())
-    {
-        return false;
-    }
-    if (!LoadTexture(texFileName))
-    {
-        return false;
-    }
-
-    /*  UINT iSize = m_VertexList.size() * sizeof(TVertex);
-   m_pVertexBuffer = CreateBuffer(iSize, D3D11_BIND_VERTEX_BUFFER,(void**)&m_VertexList.at(0));
-   iSize = m_IndexList.size() * sizeof(DWORD);
-   m_pIndexBuffer = CreateBuffer(iSize, D3D11_BIND_INDEX_BUFFER, (void**)&m_IndexList.at(0));
-
-   m_pVertexShaderByteCode = CreateShader(L"Shader.txt", "VS", "vs_5_0");
-   m_pPixelShaderByteCode = CreateShader(L"Shader.txt", "PS", "ps_5_0");
-   if (m_pVertexShaderByteCode == nullptr || m_pVertexShaderByteCode == nullptr)
-   {
-       return false;
-   }*/
-    return true;
-}
-bool    TPlaneShape::Create(W_STR name, W_STR texFileName)
+bool    PlaneShape::Create(W_STR name, T_STR_VECTOR texFileName)
 {
     m_csName = name;
     //// v0       v1
@@ -310,11 +261,60 @@ bool    TPlaneShape::Create(W_STR name, W_STR texFileName)
    }*/
     return true;
 }
-bool    TPlaneShape::Frame()
+bool    PlaneShape::Create(W_STR name, W_STR texFileName)
+{
+    m_csName = name;
+    //// v0       v1
+    ////
+    //// v3       v2
+    //m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(0, 1, 0, 1), TVector2(0.0f, 0.0f));      // 0
+    //m_VertexList.emplace_back(TVector3(m_rtClient.right, 0.0f, 0.5f), TVector4(0, 1, 0, 1), TVector2(1.0f, 0.0f));    // 1
+    //m_VertexList.emplace_back(TVector3(m_rtClient.right, m_rtClient.bottom, 0.5f), TVector4(0, 0, 1, 1), TVector2(1.0f, 1.0f));  // 2
+    //m_VertexList.emplace_back(TVector3(0.0f, m_rtClient.bottom, 0.5f), TVector4(0, 0, 1, 1), TVector2(0.0f, 1.0f));    // 3
+    m_IndexList.push_back(0);
+    m_IndexList.push_back(1);
+    m_IndexList.push_back(2);
+
+    m_IndexList.push_back(2);
+    m_IndexList.push_back(3);
+    m_IndexList.push_back(0);
+
+    if (!CreateVertexBuffer() || !CreateIndexBuffer())
+    {
+        return false;
+    }
+    if (!CreateVertexShader() || !CreatePixelShader())
+    {
+        return false;
+    }
+
+    if (!CreateInputLayout())
+    {
+        return false;
+    }
+    if (!LoadTexture(texFileName))
+    {
+        return false;
+    }
+
+    /*  UINT iSize = m_VertexList.size() * sizeof(TVertex);
+   m_pVertexBuffer = CreateBuffer(iSize, D3D11_BIND_VERTEX_BUFFER,(void**)&m_VertexList.at(0));
+   iSize = m_IndexList.size() * sizeof(DWORD);
+   m_pIndexBuffer = CreateBuffer(iSize, D3D11_BIND_INDEX_BUFFER, (void**)&m_IndexList.at(0));
+
+   m_pVertexShaderByteCode = CreateShader(L"Shader.txt", "VS", "vs_5_0");
+   m_pPixelShaderByteCode = CreateShader(L"Shader.txt", "PS", "ps_5_0");
+   if (m_pVertexShaderByteCode == nullptr || m_pVertexShaderByteCode == nullptr)
+   {
+       return false;
+   }*/
+    return true;
+}
+bool    PlaneShape::Frame()
 {
     return true;
 }
-bool    TPlaneShape::PreRender()
+bool    PlaneShape::PreRender()
 {
     m_pd3dContext->PSSetShaderResources(0, 1, &m_ptTex->m_pTextureSRV);
     m_pd3dContext->VSSetShader(m_pVertexShader, NULL, 0);
@@ -333,18 +333,18 @@ bool    TPlaneShape::PreRender()
 
     return true;
 }
-bool    TPlaneShape::PostRender()
+bool    PlaneShape::PostRender()
 {
     m_pd3dContext->DrawIndexed(m_IndexList.size(), 0, 0);
     return true;
 }
-bool    TPlaneShape::Render()
+bool    PlaneShape::Render()
 {
     PreRender();
     PostRender();
     return true;
 }
-bool    TPlaneShape::Release()
+bool    PlaneShape::Release()
 {
     if (m_pVertexlayout)m_pVertexlayout->Release();
     if (m_pVertexBuffer) m_pVertexBuffer->Release();

@@ -1,11 +1,11 @@
-#include "TInput.h"
-#include "TStd.h"
-bool	 TInput::Init()
+#include "Input.h"
+#include "std.h"
+bool	 Input::Init()
 {
 	ZeroMemory(m_dwKeyState, sizeof(DWORD) * 256);
 	return true;
 }
-bool	 TInput::Frame()
+bool	 Input::Frame()
 {
 	GetCursorPos(&m_ptMouse); // È­¸éÁÂÇ¥
 	ScreenToClient(g_hWnd, &m_ptMouse);
@@ -34,11 +34,11 @@ bool	 TInput::Frame()
 	}
 	return true;
 }
-bool	 TInput::Render()
+bool	 Input::Render()
 {
 	return true;
 }
-bool	 TInput::Release()
+bool	 Input::Release()
 {
 	return true;
 }

@@ -1,5 +1,5 @@
-#include "TTextureMgr.h"
-bool		TTexture::Load(ID3D11Device* pd3dDevice,
+#include "TextureMgr.h"
+bool		Texture::Load(ID3D11Device* pd3dDevice,
     ID3D11DeviceContext* pd3dContext,
     std::wstring texFileName)
 {
@@ -77,19 +77,19 @@ bool		TTexture::Load(ID3D11Device* pd3dDevice,
     }
     return false;
 }
-bool        TTexture::Release()
+bool        Texture::Release()
 {
     if (m_pTextureSRV)m_pTextureSRV->Release();
     return true;
 }
-TTexture* TTextureMgr::Load(std::wstring loadfilename)
+Texture* TextureMgr::Load(std::wstring loadfilename)
 {
     auto iter = m_list.find(loadfilename);
     if (iter != m_list.end())
     {
         return iter->second.get();
     }
-    std::shared_ptr<TTexture>  pTex = std::make_shared<TTexture>();
+    std::shared_ptr<Texture>  pTex = std::make_shared<Texture>();
     if (pTex->Load(m_pd3dDevice, m_pd3dContext, loadfilename))
     {
         m_list.insert(std::make_pair(loadfilename, pTex));
@@ -97,7 +97,7 @@ TTexture* TTextureMgr::Load(std::wstring loadfilename)
     }
     return nullptr;
 }
-bool   TTextureMgr::Release()
+bool   TextureMgr::Release()
 {
     for (auto data : m_list)
     {
@@ -106,7 +106,7 @@ bool   TTextureMgr::Release()
     m_list.clear();
     return true;
 }
-TTextureMgr::~TTextureMgr()
+TextureMgr::~TextureMgr()
 {
     Release();
 }

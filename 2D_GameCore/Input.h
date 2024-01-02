@@ -3,14 +3,14 @@
 
 enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP };
 
-class TInput
+class Input
 {
 public:
 	POINT	m_ptMouse;
 	DWORD    m_dwKeyState[256];
-	static TInput& Get()
+	static Input& Get()
 	{
-		static TInput mgr;
+		static Input mgr;
 		return mgr;
 	}
 public:
@@ -19,8 +19,8 @@ public:
 	bool	 Render();
 	bool	 Release();
 private:
-	TInput() {};
+	Input() {};
 public:
-	~TInput() {}
+	~Input() {}
 };
 

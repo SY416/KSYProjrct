@@ -1,6 +1,6 @@
-#include "TEffect.h"
-#include "TInput.h"
-bool    TEffect::Create(W_STR name, T_STR_VECTOR texFileName)
+#include "Effect.h"
+#include "Input.h"
+bool    Effect::Create(W_STR name, T_STR_VECTOR texFileName)
 {
     m_csName = name;
     m_rtRect.left = m_VertexList[0].pos.x;
@@ -11,7 +11,7 @@ bool    TEffect::Create(W_STR name, T_STR_VECTOR texFileName)
     LoadTexture(texFileName);
     return true;
 }
-bool    TEffect::Create(W_STR name,
+bool    Effect::Create(W_STR name,
     W_STR texFileName, UINT iNumWidth, UINT iNumHeight, float fAnimTime)
 {
     m_csName = name;
@@ -55,29 +55,29 @@ bool    TEffect::Create(W_STR name,
     LoadTexture(texFileName);
     return true;
 }
-bool    TEffect::Init() {
+bool    Effect::Init() {
     return true;
 };
 
-bool TEffect::LoadTexture(T_STR_VECTOR texArray)
+bool Effect::LoadTexture(T_STR_VECTOR texArray)
 {
     for (int i = 0; i < texArray.size(); i++)
     {
-        m_pTexArray.push_back(TTextureMgr::Get().Load(texArray[i]));
+        m_pTexArray.push_back(TextureMgr::Get().Load(texArray[i]));
     }
     //m_ptTex = m_pTexArray[m_uiState];
     return true;
 }
-bool    TEffect::LoadTexture(std::wstring texFileName) {
-    m_ptTex = TTextureMgr::Get().Load(texFileName);
+bool    Effect::LoadTexture(std::wstring texFileName) {
+    m_ptTex = TextureMgr::Get().Load(texFileName);
     if (m_ptTex != nullptr)
         return true;
     return false;
 };
-bool    TEffect::PreRender() {
+bool    Effect::PreRender() {
     return true;
 };
-bool    TEffect::Frame(float fElapsTime)
+bool    Effect::Frame(float fElapsTime)
 {
     if (m_fAnimationTime <= 0.0f)
     {
@@ -103,11 +103,11 @@ bool    TEffect::Frame(float fElapsTime)
     }
     return true;
 }
-bool    TEffect::Render(ID3D11DeviceContext* pd3dContext) {
+bool    Effect::Render(ID3D11DeviceContext* pd3dContext) {
     if (m_ptTex == nullptr) return true;
     pd3dContext->PSSetShaderResources(0, 1, &m_ptTex->m_pTextureSRV);
     return true;
 };
-bool    TEffect::PostRender() { return true; };
-bool    TEffect::Release() { return true; };
+bool    Effect::PostRender() { return true; };
+bool    Effect::Release() { return true; };
 

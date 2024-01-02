@@ -1,6 +1,6 @@
 #pragma once
-#include "TPlaneShape.h"
-class TEffect
+#include "PlaneShape.h"
+class Effect
 {
 public:
 	W_STR                   m_csName;
@@ -15,9 +15,9 @@ public:
 	float					m_fStepTime = 0.0f;
 
 	std::vector<tRECT>		m_pUVArray;
-	std::vector<TTexture*>  m_pTexArray;
+	std::vector<Texture*>  m_pTexArray;
 	std::vector<TVertex>	m_VertexList;  // 시스템 메모리
-	TTexture* m_ptTex = nullptr;
+	Texture* m_ptTex = nullptr;
 public:
 	virtual bool    Init();
 	virtual bool    Create(W_STR name) {

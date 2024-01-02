@@ -1,21 +1,22 @@
 #pragma once
-#include "TDevice.h"
-#include "TUiObj.h"
-#include "TInput.h"
-#include "TTimer.h"
-#include "TEffect.h"
-#include "TDxWrite.h"
-class TGameCore : public TDevice
+#include "Device.h"
+#include "UiObj.h"
+#include "Input.h"
+#include "Timer.h"
+#include "Effect.h"
+#include "Write.h"
+#include "SoundMgr.h"
+class Core : public Device
 {
 public:
-	TDxWrite			m_dxWrite;
-	TTimer				m_GameTimer;
+	Write			m_Write;
+	Timer				m_GameTimer;
 	ID3D11SamplerState* m_pDefaultSS = nullptr;
 	ID3D11SamplerState* m_pDefaultSSPoint = nullptr;
 	ID3D11BlendState* m_pAlphaBlendEnable = nullptr;
 	ID3D11BlendState* m_pAlphaBlendDisable = nullptr;
 public:
-	TPlaneShape						m_DefaultPlane;
+	PlaneShape						m_DefaultPlane;
 public:
 	bool    AlphaBlendState();
 	bool	CreatePixelShader();

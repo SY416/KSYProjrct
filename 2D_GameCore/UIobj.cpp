@@ -1,6 +1,6 @@
-#include "TUiObj.h"
-#include "TInput.h"
-bool    TUiObj::Create(W_STR name, T_STR_VECTOR texFileName)
+#include "UIobj.h"
+#include "Input.h"
+bool    UIobj::Create(W_STR name, T_STR_VECTOR texFileName)
 {
     m_csName = name;
     m_rtRect.left = m_VertexList[0].pos.x;
@@ -12,7 +12,7 @@ bool    TUiObj::Create(W_STR name, T_STR_VECTOR texFileName)
     LoadTexture(texFileName);
     return true;
 }
-bool    TUiObj::Create(W_STR name, W_STR texFileName)
+bool    UIobj::Create(W_STR name, W_STR texFileName)
 {
     m_csName = name;
     // p0, w, h
@@ -26,35 +26,35 @@ bool    TUiObj::Create(W_STR name, W_STR texFileName)
     LoadTexture(texFileName);
     return true;
 }
-bool    TUiObj::Init() {
+bool    UIobj::Init() {
     return true;
 };
-bool    TUiObj::Load(std::wstring LoadFileName) {
+bool    UIobj::Load(std::wstring LoadFileName) {
     return true;
 };
-bool TUiObj::LoadTexture(T_STR_VECTOR texArray)
+bool UIobj::LoadTexture(T_STR_VECTOR texArray)
 {
     for (int i = 0; i < texArray.size(); i++)
     {
-        m_pTexArray.push_back(TTextureMgr::Get().Load(texArray[i]));
+        m_pTexArray.push_back(TextureMgr::Get().Load(texArray[i]));
     }
     m_ptTex = m_pTexArray[m_uiState];
     return true;
 }
-bool    TUiObj::LoadTexture(std::wstring texFileName) {
-    m_ptTex = TTextureMgr::Get().Load(texFileName);
+bool    UIobj::LoadTexture(std::wstring texFileName) {
+    m_ptTex = TextureMgr::Get().Load(texFileName);
     if (m_ptTex != nullptr)
         return true;
     return false;
 };
-bool    TUiObj::PreRender() {
+bool    UIobj::PreRender() {
     return true;
 };
-bool    TUiObj::Frame(float fElapsTime)
+bool    UIobj::Frame(float fElapsTime)
 {
     if (m_uiState == T_STATE_PRESSED && m_pTexArray.size() > 0)
     {
-        if (TInput::Get().m_dwKeyState[VK_LBUTTON] == KEY_UP)
+        if (Input::Get().m_dwKeyState[VK_LBUTTON] == KEY_UP)
         {
             m_isSelected = TRUE;
             MessageBox(NULL, m_csName.c_str(), L"Selected!", MB_OK);
@@ -62,13 +62,13 @@ bool    TUiObj::Frame(float fElapsTime)
         }
     }
     m_uiState = T_STATE_NORMAL;
-    POINT tpMouse = TInput::Get().m_ptMouse;
+    POINT tpMouse = Input::Get().m_ptMouse;
     if (m_rtRect.left <= tpMouse.x && m_rtRect.right >= tpMouse.x)
     {
         if (m_rtRect.top <= tpMouse.y && m_rtRect.bottom >= tpMouse.y)
         {
             m_uiState = T_STATE_MOUSEOVER;
-            if (TInput::Get().m_dwKeyState[VK_LBUTTON] == KEY_HOLD)
+            if (Input::Get().m_dwKeyState[VK_LBUTTON] == KEY_HOLD)
             {
                 m_uiState = T_STATE_PRESSED;
             }
@@ -80,12 +80,12 @@ bool    TUiObj::Frame(float fElapsTime)
     }
     return true;
 };
-bool    TUiObj::Render(ID3D11DeviceContext* pd3dContext) {
+bool    UIobj::Render(ID3D11DeviceContext* pd3dContext) {
     pd3dContext->PSSetShaderResources(0, 1, &m_ptTex->m_pTextureSRV);
     return true;
 };
-bool    TUiObj::PostRender() { return true; };
-bool    TUiObj::Release() { return true; };
+bool    UIobj::PostRender() { return true; };
+bool    UIobj::Release() { return true; };
 
 
 
@@ -95,19 +95,19 @@ bool    TUiObj::Release() { return true; };
 /// </summary>
 /// <param name="texFileName"></param>
 /// <returns></returns>
-bool    TUiNumber::Create(W_STR name, T_STR_VECTOR texArray)
+bool    UINumber::Create(W_STR name, T_STR_VECTOR texArray)
 {
     LoadTexture(texArray);
     return true;
 }
-bool    TUiNumber::Create(W_STR name)
+bool    UINumber::Create(W_STR name)
 {
     LoadTexture();
     return true;
 }
-bool TUiNumber::LoadTexture(T_STR_VECTOR texArray)
+bool UINumber::LoadTexture(T_STR_VECTOR texArray)
 {
-    TUiObj::LoadTexture(texArray);
+    UIobj::LoadTexture(texArray);
 
     m_iApplyIndex = 0;
     m_fTimer = 0.0f;
@@ -115,14 +115,14 @@ bool TUiNumber::LoadTexture(T_STR_VECTOR texArray)
     m_fStepTime = m_fAnimationTime / m_pTexArray.size();
     return true;
 }
-bool TUiNumber::LoadTexture()
+bool UINumber::LoadTexture()
 {
     for (int i = 0; i < 10; i++)
     {
         std::wstring filename = L"../../data/";
         filename += std::to_wstring(i);
         filename += L".png";
-        m_pTexArray.push_back(TTextureMgr::Get().Load(filename));
+        m_pTexArray.push_back(TextureMgr::Get().Load(filename));
     }
 
     m_iApplyIndex = 0;
@@ -131,7 +131,7 @@ bool TUiNumber::LoadTexture()
     m_fStepTime = m_fAnimationTime / m_pTexArray.size();
     return true;
 }
-bool    TUiNumber::Frame(float fElapsTime)
+bool    UINumber::Frame(float fElapsTime)
 {
     if (m_fAnimationTime <= 0.0f)
     {
@@ -151,14 +151,14 @@ bool    TUiNumber::Frame(float fElapsTime)
     }
     return true;
 }
-bool    TUiNumber::Render(ID3D11DeviceContext* pd3dContext)
+bool    UINumber::Render(ID3D11DeviceContext* pd3dContext)
 {
     pd3dContext->PSSetShaderResources(0, 1, &m_pTexArray[m_iApplyIndex]->m_pTextureSRV);
     return true;
 };
 
-bool    TUiNumber::Release()
+bool    UINumber::Release()
 {
-    TUiObj::Release();
+    UIobj::Release();
     return true;
 }

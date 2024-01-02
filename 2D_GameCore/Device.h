@@ -1,7 +1,7 @@
 #pragma once
-#include "TWindow.h"
+#include "Window.h"
 
-class TDevice : public TWindow
+class Device : public Window
 {
 public:
 	ID3D11Device* m_pd3dDevice = nullptr;

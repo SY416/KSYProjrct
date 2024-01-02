@@ -1,5 +1,5 @@
 #pragma once
-#include "TTextureMgr.h"
+#include "TextureMgr.h"
 
 struct TVector2
 {
@@ -7,6 +7,83 @@ struct TVector2
 	float y;
 	TVector2() { x = 0; y = 0; }
 	TVector2(float _x, float _y) { x = _x; y = _y; }
+
+	/*float Length()
+	{
+		return sqrt(LingthSquared());
+	}
+	float LingthSquared()
+	{
+		return (x * x, y * y);
+	}
+	TVector2 Normal()
+	{
+		float fLength = Length();
+		if (fLength <= 0.0f)
+		{
+			x = y = 0.0f;
+			return *this;
+		}
+		float InvertLength = 1.0 / fLength;
+		return TVector2(x * InvertLength, y * InvertLength);
+	}
+	void Normalized()
+	{
+		float InvertLength = 1.0 / Length();
+		x *= InvertLength;
+		y* InvertLength;
+	}*/
+	TVector2& operator+=(const TVector2& V)
+	{
+		x += V.x;
+		y += V.y;
+		return *this;
+	}
+	TVector2& operator-=(const TVector2& V)
+	{
+		x -= V.x;
+		y -= V.y;
+		return *this;
+	}
+	TVector2 operator+(const TVector2& V) const
+	{
+		return TVector2(x + V.x, y + V.y);
+	}
+	TVector2 operator-(const TVector2& V) const
+	{
+		return TVector2(x - V.x, y - V.y);
+	}
+	TVector2 operator-(float Bias) const
+	{
+		return TVector2(x * Bias, y * Bias);
+	}
+	TVector2 operator+(float Bias) const
+	{
+		return TVector2(x + Bias, y + Bias);
+	}
+	TVector2 operator*(float Scale) const
+	{
+		return TVector2(x * Scale, y * Scale);
+	}
+	TVector2 operator/(float Scale) const
+	{
+		return TVector2(x / Scale, y / Scale);
+	}
+	bool operator==(const TVector2& V) const
+	{
+		if (fabs(x - V.x) < 0.001f)
+		{
+			if (fabs(y - V.y) < 0.001f)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	bool operator!=(const TVector2& V) const
+	{
+		return !(*this == V);
+	}
 };
 struct TVector3
 {
@@ -34,15 +111,20 @@ struct TVertex
 	TVertex() {}
 	TVertex(TVector3 p, TVector4 c, TVector2 t) { pos = p; color = c; tex = t; }
 };
-class TPlaneShape
+class PlaneShape
 {
 public:
 	W_STR                   m_csName;
+	W_STR                   m_csDefaultVSFileName;
+	W_STR                   m_csDefaultPSFileName;
+	C_STR                   m_csDefaultVSEntryName;
+	C_STR                   m_csDefaultPSEntryName;
+
 	ID3D11Device* m_pd3dDevice = nullptr;
 	ID3D11DeviceContext* m_pd3dContext = nullptr;
 	RECT					m_rtClient;
-	TTexture* m_ptTex;
-	std::vector<TTexture*>  m_pTexArray;
+	Texture* m_ptTex;
+	std::vector<Texture*>  m_pTexArray;
 	std::vector<TVertex>	m_VertexList;  // 시스템 메모리
 	std::vector<DWORD>		m_IndexList;
 	ID3D11Buffer* m_pVertexBuffer;//  비디오카드 메모리
@@ -53,7 +135,7 @@ public:
 	ID3D11PixelShader* m_pPixelShader = nullptr;
 	ID3D11InputLayout* m_pVertexlayout = nullptr;
 public:
-	bool	CreateVertexBuffer();
+	virtual bool	CreateVertexBuffer();
 	bool	CreateIndexBuffer();
 	ID3D11Buffer* CreateBuffer(UINT ByteWidth, UINT BindFlags, void** pAddress);
 
@@ -74,4 +156,10 @@ public:
 	virtual bool    Render();
 	virtual bool    PostRender();
 	virtual bool    Release();
+
+public:
+	PlaneShape()
+	{
+		Init();
+	}
 };

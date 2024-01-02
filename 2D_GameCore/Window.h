@@ -1,8 +1,8 @@
 #pragma once
-#include "TStd.h"
+#include "std.h"
 extern bool g_bChange;
 extern int g_iChangeAnimation;
-class TWindow
+class Window
 {
 public:
     HWND        m_hWnd;

@@ -1,6 +1,6 @@
-#include "TDevice.h"
+#include "Device.h"
 
-bool TDevice::CreateDevice()
+bool Device::CreateDevice()
 {
     D3D_DRIVER_TYPE DriverType = D3D_DRIVER_TYPE_HARDWARE;
     UINT Flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -13,8 +13,8 @@ bool TDevice::CreateDevice()
     };
     DXGI_SWAP_CHAIN_DESC sd;
     //DXGI_MODE_DESC BufferDesc;
-    sd.BufferDesc.Width = 800;
-    sd.BufferDesc.Height = 600;
+    sd.BufferDesc.Width = 1366;
+    sd.BufferDesc.Height = 768;
     sd.BufferDesc.RefreshRate.Denominator = 1;
     sd.BufferDesc.RefreshRate.Numerator = 60;
     sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -67,7 +67,7 @@ bool TDevice::CreateDevice()
     return true;
 }
 
-bool TDevice::DeleteDevice()
+bool Device::DeleteDevice()
 {
     if (m_pd3dDevice != nullptr) m_pd3dDevice->Release();
     if (m_pd3dContext) m_pd3dContext->Release();

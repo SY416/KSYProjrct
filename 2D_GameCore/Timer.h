@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <string>
 #pragma comment (lib, "winmm.lib") // timeGetTime
-class TTimer
+class Timer
 {
 public:
     float   m_fGameTimer = 0.0f;

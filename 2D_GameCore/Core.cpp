@@ -1,5 +1,5 @@
-#include "TGameCore.h"
-bool TGameCore::CreateSampleState()
+#include "Core.h"
+bool Core::CreateSampleState()
 {
     D3D11_SAMPLER_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
@@ -20,7 +20,7 @@ bool TGameCore::CreateSampleState()
     hr = m_pd3dDevice->CreateSamplerState(&sd, &m_pDefaultSSPoint);
     return true;
 }
-bool TGameCore::AlphaBlendState()
+bool Core::AlphaBlendState()
 {
     D3D11_BLEND_DESC bsd;
     ZeroMemory(&bsd, sizeof(bsd));
@@ -51,21 +51,23 @@ bool TGameCore::AlphaBlendState()
 
     return true;
 }
-bool TGameCore::GameInit()
+bool Core::GameInit()
 {
     CreateDevice();
+
+    SoundMgr::Get().Init();
 
     IDXGISurface* dxgiSurface;
     HRESULT hr = m_pSwapChain->GetBuffer(0, __uuidof(IDXGISurface), (void**)&dxgiSurface);
     if (SUCCEEDED(hr))
     {
-        m_dxWrite.Init(dxgiSurface);
+        m_Write.Init(dxgiSurface);
         if (dxgiSurface)dxgiSurface->Release();
     }
 
     m_GameTimer.Init();
-    TInput::Get().Init();
-    TTextureMgr::Get().Set(m_pd3dDevice, m_pd3dContext);
+    Input::Get().Init();
+    TextureMgr::Get().Set(m_pd3dDevice, m_pd3dContext);
     AlphaBlendState();
     CreateSampleState();
 
@@ -73,11 +75,11 @@ bool TGameCore::GameInit()
     m_DefaultPlane.m_pd3dContext = m_pd3dContext;
     m_DefaultPlane.m_rtClient = m_rtClient;
 
-    m_DefaultPlane.m_VertexList.emplace_back(TVector3(0, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
-    m_DefaultPlane.m_VertexList.emplace_back(TVector3(800.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
-    m_DefaultPlane.m_VertexList.emplace_back(TVector3(800.0f, 600, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
-    m_DefaultPlane.m_VertexList.emplace_back(TVector3(0.0f, 600, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
-    if (!m_DefaultPlane.Create(L"DefaultPlane", L"../../data/RECT.png"))
+    m_DefaultPlane.m_VertexList.emplace_back(TVector3(0.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 0.0f));      // 0
+    m_DefaultPlane.m_VertexList.emplace_back(TVector3(1366.0f, 0.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 0.0f));    // 1
+    m_DefaultPlane.m_VertexList.emplace_back(TVector3(1366.0f, 768.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(1.0f, 1.0f));  // 2
+    m_DefaultPlane.m_VertexList.emplace_back(TVector3(0.0f, 768.0f, 0.5f), TVector4(1, 1, 1, 1), TVector2(0.0f, 1.0f));    // 3
+    if (!m_DefaultPlane.Create(L"DefaultPlane", L"../../data/bk1.png"))
     {
         return false;
     }
@@ -85,26 +87,41 @@ bool TGameCore::GameInit()
     Init();
     return true;
 }
-bool TGameCore::GameFrame()
+bool Core::GameFrame()
 {
+    m_GameTimer.Frame();
+    Input::Get().Frame();
+    SoundMgr::Get().Frame();
+
     Frame();
     return true;
 }
-bool TGameCore::GameRender()
+bool Core::GameRender()
 {
     float clearColor[] = { 0.0f,0.0f,0.0f,1 };
     m_pd3dContext->ClearRenderTargetView(m_pRenderTargetView, clearColor);
 
+    m_pd3dContext->PSSetSamplers(0, 1, &m_pDefaultSS);
+    m_pd3dContext->OMSetBlendState(m_pAlphaBlendEnable, 0, -1);
+
+    m_pd3dContext->UpdateSubresource(m_DefaultPlane.m_pVertexBuffer,
+        0,
+        nullptr,
+        &m_DefaultPlane.m_VertexList.at(0),
+        0,
+        0);
+    m_DefaultPlane.Render();
+
     Render();
 
     m_GameTimer.Render();
-    TInput::Get().Render();
-    m_dxWrite.Render();
+    Input::Get().Render();
+    m_Write.Render();
 
     m_pSwapChain->Present(0, 0);
     return true;
 }
-bool TGameCore::GameRelease()
+bool Core::GameRelease()
 {
     Release();
     if (m_pDefaultSS)m_pDefaultSS->Release();
@@ -113,9 +130,9 @@ bool TGameCore::GameRelease()
     if (m_pAlphaBlendDisable)m_pAlphaBlendDisable->Release();
 
     m_DefaultPlane.Release();
-    TInput::Get().Release();
+    Input::Get().Release();
     m_GameTimer.Release();
-    m_dxWrite.Release();
+    m_Write.Release();
 
     DeleteDevice();
     return true;

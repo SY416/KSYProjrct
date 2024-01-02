@@ -1,6 +1,6 @@
-#include "TDxWrite.h"
-#include "TStd.h"
-bool        TDxWrite::Init(IDXGISurface* dxgiSurface)
+#include "Write.h"
+#include "std.h"
+bool        Write::Init(IDXGISurface* dxgiSurface)
 {
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED,
 		&m_pD2DFactory);
@@ -66,20 +66,20 @@ bool        TDxWrite::Init(IDXGISurface* dxgiSurface)
 		&m_pDefaultBrush);
 	return true;
 }
-bool        TDxWrite::Frame()
+bool        Write::Frame()
 {
 	return true;
 }
-bool        TDxWrite::Render()
+bool        Write::Render()
 {
 	if (m_pRT == nullptr) return true;
-	std::wstring msg = L"케이지씨에이(KGCA)";
+	std::wstring msg = L"대충 글자";
 	m_pRT->BeginDraw();
-	D2D1_RECT_F rtf = { 0.0f, 0.0f, 800.0f, 600.0f };
+	D2D1_RECT_F rtf = { 0.0f, 0.0f, 1366.0f, 768.0f };
 	D2D1_COLOR_F color;// = D2D1::ColorF(D2D1::ColorF::Yellow);
-	color.r = 1.0f;
+	color.r = 0.0f;
 	color.g = 0.0f;
-	color.b = 0.0f;
+	color.b = 1.0f;
 	color.a = 1.0f;
 	m_pDefaultBrush->SetColor(color);
 	m_pRT->DrawText(msg.c_str(), msg.size(), m_pTextFormat,
@@ -87,30 +87,30 @@ bool        TDxWrite::Render()
 	m_pRT->EndDraw();
 	return true;
 }
-void		TDxWrite::Draw30(float x, float y,
+void		Write::Draw30(float x, float y,
 	std::wstring msg,
 	D2D1::ColorF color)
 {
 	m_pRT->BeginDraw();
-	D2D1_RECT_F rtf = { x, y, 800.0f, 600.0f };
+	D2D1_RECT_F rtf = { x, y, 1366.0f, 768.0f };
 	m_pDefaultBrush->SetColor(color);
 	m_pRT->DrawText(msg.c_str(), msg.size(), m_pTextFormat,
 		rtf, m_pDefaultBrush);
 	m_pRT->EndDraw();
 }
-void		TDxWrite::Draw20(float x, float y,
+void		Write::Draw20(float x, float y,
 	std::wstring msg,
 	D2D1::ColorF color)
 {
 	m_pRT->BeginDraw();
-	D2D1_RECT_F rtf = { x, y, 800.0f, 600.0f };
+	D2D1_RECT_F rtf = { x, y, 1366.0f, 768.0f };
 	m_pDefaultBrush->SetColor(color);
 	m_pRT->DrawText(msg.c_str(), msg.size(),
 		m_pTextFormat20,
 		rtf, m_pDefaultBrush);
 	m_pRT->EndDraw();
 }
-bool        TDxWrite::Release()
+bool        Write::Release()
 {
 	if (m_pTextFormat20)m_pTextFormat20->Release();
 	if (m_pTextFormat)m_pTextFormat->Release();

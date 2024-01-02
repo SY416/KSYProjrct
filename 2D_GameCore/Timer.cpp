@@ -1,15 +1,18 @@
-#include "TTimer.h"
-bool  TTimer::Init()
+#include "Timer.h"
+
+float g_fSecPerFrame = 0.0f;
+
+bool  Timer::Init()
 {
 	m_dwTickStart = timeGetTime();
 	return true;
 }
-bool  TTimer::Frame()
+bool  Timer::Frame()
 {
 	m_dwTickEnd = timeGetTime();
 	DWORD dwElapseTick = m_dwTickEnd - m_dwTickStart;
 
-	m_fSecondPerFrame = dwElapseTick / 1000.0f;
+	g_fSecPerFrame = m_fSecondPerFrame = dwElapseTick / 1000.0f;
 	m_fGameTimer += m_fSecondPerFrame;
 
 	m_iFPS++;
@@ -25,10 +28,10 @@ bool  TTimer::Frame()
 	m_dwTickStart = m_dwTickEnd;
 	return true;
 }
-bool  TTimer::Render()
+bool  Timer::Render()
 {
 	m_outmsg.clear();
-	m_outmsg = L"게임경과시간:";
+	m_outmsg = L"경과시간:";
 	m_outmsg += std::to_wstring(m_fGameTimer);
 	m_outmsg += L" ";
 	m_outmsg += L"1프레임 경과시간:";
@@ -38,10 +41,9 @@ bool  TTimer::Render()
 	m_outmsg += m_msg;
 	m_outmsg += L"\n";
 
-	//OutputDebugString(outmsg.c_str());
 	return true;
 }
-bool  TTimer::Release()
+bool  Timer::Release()
 {
 	return true;
 }

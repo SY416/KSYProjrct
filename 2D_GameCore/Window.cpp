@@ -1,4 +1,4 @@
-#include "TWindow.h"
+#include "Window.h"
 #include <string>
 HWND g_hWnd;
 bool g_bChange = true;
@@ -21,10 +21,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-BOOL TWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)
+BOOL Window::InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     DWORD dwWindowStyle = WS_OVERLAPPEDWINDOW;
-    RECT rt = { 0,0,800, 600 };
+    RECT rt = { 0, 0, 1366, 768 };
 
     AdjustWindowRect(&rt, dwWindowStyle, FALSE);
 
@@ -48,7 +48,7 @@ BOOL TWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)
     UpdateWindow(hWnd);
     return TRUE;
 }
-ATOM TWindow::MyRegisterClass(HINSTANCE hInstance)
+ATOM Window::MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
     ZeroMemory(&wcex, sizeof(wcex));
@@ -62,7 +62,7 @@ ATOM TWindow::MyRegisterClass(HINSTANCE hInstance)
     wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     return RegisterClassExW(&wcex);
 }
-void TWindow::SetWindow(HINSTANCE hInstance, int    nCmdShow)
+void Window::SetWindow(HINSTANCE hInstance, int    nCmdShow)
 {
     m_hInstance = hInstance;
     //1번 ) 윈도우 레지스터 클래스 등록
@@ -72,7 +72,7 @@ void TWindow::SetWindow(HINSTANCE hInstance, int    nCmdShow)
     //3번 ) 윈도우 프로시져 작업
 }
 
-void TWindow::Run()
+void Window::Run()
 {
     GameInit();
 
@@ -108,7 +108,7 @@ void TWindow::Run()
     GameRelease();
 }
 
-void TWindow::ReleaseAll()
+void Window::ReleaseAll()
 {
 }
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "TPlaneShape.h"
+#include "PlaneShape.h"
 
 enum T_CONTROL_STATE
 {
@@ -14,16 +14,16 @@ enum T_CONTROL_STATE
 	T_STATE_MAXSTATE,
 };
 
-class TUiObj
+class UIobj
 {
 public:
 	W_STR                   m_csName;
 	RECT					m_rtRect;
 	T_CONTROL_STATE			m_uiState;
 	BOOL					m_isSelected = FALSE;
-	std::vector<TTexture*>  m_pTexArray;
+	std::vector<Texture*>  m_pTexArray;
 	std::vector<TVertex>	m_VertexList;  // 시스템 메모리
-	TTexture* m_ptTex = nullptr;
+	Texture* m_ptTex = nullptr;
 public:
 	virtual bool    Init();
 	virtual bool    Create(W_STR name) {
@@ -41,7 +41,7 @@ public:
 	virtual bool    Release();
 };
 
-class TUiNumber : public TUiObj
+class UINumber : public UIobj
 {
 public:
 	UINT    m_iApplyIndex = 0;
