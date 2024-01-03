@@ -1,6 +1,7 @@
 #include "Timer.h"
 
 float g_fSecPerFrame = 0.0f;
+float g_fTimer = 0.0f;
 
 bool  Timer::Init()
 {
@@ -14,6 +15,7 @@ bool  Timer::Frame()
 
 	g_fSecPerFrame = m_fSecondPerFrame = dwElapseTick / 1000.0f;
 	m_fGameTimer += m_fSecondPerFrame;
+	g_fTimer += m_fSecondPerFrame;
 
 	m_iFPS++;
 	m_dwTime += dwElapseTick;
@@ -31,16 +33,40 @@ bool  Timer::Frame()
 bool  Timer::Render()
 {
 	m_outmsg.clear();
-	m_outmsg = L"경과시간:";
-	m_outmsg += std::to_wstring(m_fGameTimer);
-	m_outmsg += L" ";
-	m_outmsg += L"1프레임 경과시간:";
-	m_outmsg += std::to_wstring(m_fSecondPerFrame);
-	m_outmsg += L" ";
-	m_outmsg += L"초당 프레임:";
-	m_outmsg += m_msg;
-	m_outmsg += L"\n";
+	if (int(m_fGameTimer) / 60 < 10) {
+		m_outmsg += L"0";
+		m_outmsg += std::to_wstring(int(m_fGameTimer) / 60);
+		m_outmsg += L" 분 ";
+	}
+	else
+	{
+		m_outmsg += std::to_wstring(int(m_fGameTimer) / 60);
+		m_outmsg += L" 분 ";
+	}
 
+	if (int(m_fGameTimer) % 60 < 10) {
+		m_outmsg += L"0";
+		m_outmsg += std::to_wstring(int(m_fGameTimer) % 60);
+		m_outmsg += L" 초 ";
+	}
+	else
+	{
+		m_outmsg += std::to_wstring(int(m_fGameTimer) % 60);
+		m_outmsg += L" 초 ";
+	}
+
+	if (int(m_fGameTimer * 100) % 100 < 10) {
+		m_outmsg += L"0";
+		m_outmsg += std::to_wstring(int(m_fGameTimer * 100) % 100);
+		m_outmsg += L"";
+	}
+	else
+	{
+		m_outmsg += std::to_wstring(int(m_fGameTimer * 100) % 100);
+		m_outmsg += L"";
+	}
+	
+	
 	return true;
 }
 bool  Timer::Release()

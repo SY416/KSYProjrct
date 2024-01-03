@@ -92,6 +92,7 @@ bool Core::GameFrame()
     m_GameTimer.Frame();
     Input::Get().Frame();
     SoundMgr::Get().Frame();
+    m_UiObj.Frame();
 
     Frame();
     return true;
@@ -117,6 +118,7 @@ bool Core::GameRender()
     m_GameTimer.Render();
     Input::Get().Render();
     m_Write.Render();
+    //m_UiObj.Render(m_pd3dContext);
 
     m_pSwapChain->Present(0, 0);
     return true;

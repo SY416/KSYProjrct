@@ -1,5 +1,8 @@
 #include "UIobj.h"
 #include "Input.h"
+
+UINT			g_uiState;
+
 bool    UIobj::Create(W_STR name, T_STR_VECTOR texFileName)
 {
     m_csName = name;
@@ -8,7 +11,7 @@ bool    UIobj::Create(W_STR name, T_STR_VECTOR texFileName)
     m_rtRect.right = m_VertexList[2].pos.x;
     m_rtRect.bottom = m_VertexList[2].pos.y;
 
-    m_uiState = T_CONTROL_STATE::T_STATE_NORMAL;
+    g_uiState = 1;
     LoadTexture(texFileName);
     return true;
 }
@@ -22,7 +25,7 @@ bool    UIobj::Create(W_STR name, W_STR texFileName)
     m_rtRect.right = m_VertexList[2].pos.x;
     m_rtRect.bottom = m_VertexList[2].pos.y;
 
-    m_uiState = T_CONTROL_STATE::T_STATE_NORMAL;
+    g_uiState = 0;
     LoadTexture(texFileName);
     return true;
 }
@@ -38,7 +41,7 @@ bool UIobj::LoadTexture(T_STR_VECTOR texArray)
     {
         m_pTexArray.push_back(TextureMgr::Get().Load(texArray[i]));
     }
-    m_ptTex = m_pTexArray[m_uiState];
+    m_ptTex = m_pTexArray[g_uiState];
     return true;
 }
 bool    UIobj::LoadTexture(std::wstring texFileName) {
@@ -50,34 +53,8 @@ bool    UIobj::LoadTexture(std::wstring texFileName) {
 bool    UIobj::PreRender() {
     return true;
 };
-bool    UIobj::Frame(float fElapsTime)
+bool    UIobj::Frame()
 {
-    if (m_uiState == T_STATE_PRESSED && m_pTexArray.size() > 0)
-    {
-        if (Input::Get().m_dwKeyState[VK_LBUTTON] == KEY_UP)
-        {
-            m_isSelected = TRUE;
-            MessageBox(NULL, m_csName.c_str(), L"Selected!", MB_OK);
-            return true;
-        }
-    }
-    m_uiState = T_STATE_NORMAL;
-    POINT tpMouse = Input::Get().m_ptMouse;
-    if (m_rtRect.left <= tpMouse.x && m_rtRect.right >= tpMouse.x)
-    {
-        if (m_rtRect.top <= tpMouse.y && m_rtRect.bottom >= tpMouse.y)
-        {
-            m_uiState = T_STATE_MOUSEOVER;
-            if (Input::Get().m_dwKeyState[VK_LBUTTON] == KEY_HOLD)
-            {
-                m_uiState = T_STATE_PRESSED;
-            }
-        }
-    }
-    if (m_pTexArray.size() > 0)
-    {
-        m_ptTex = m_pTexArray[m_uiState];
-    }
     return true;
 };
 bool    UIobj::Render(ID3D11DeviceContext* pd3dContext) {
@@ -131,7 +108,7 @@ bool UINumber::LoadTexture()
     m_fStepTime = m_fAnimationTime / m_pTexArray.size();
     return true;
 }
-bool    UINumber::Frame(float fElapsTime)
+bool    UINumber::Frame()
 {
     if (m_fAnimationTime <= 0.0f)
     {
@@ -141,8 +118,8 @@ bool    UINumber::Frame(float fElapsTime)
         m_fAnimationTime = 10.0f;
         return true;
     }
-    m_fAnimationTime -= fElapsTime;
-    m_fTimer += fElapsTime;
+    /*m_fAnimationTime -= fElapsTime;
+    m_fTimer += fElapsTime;*/
     if (m_fTimer >= m_fStepTime)
     {
         m_iApplyIndex++;

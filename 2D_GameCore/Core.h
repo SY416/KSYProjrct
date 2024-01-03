@@ -11,6 +11,7 @@ class Core : public Device
 public:
 	Write			m_Write;
 	Timer				m_GameTimer;
+	PlaneShape	m_UiObj;
 	ID3D11SamplerState* m_pDefaultSS = nullptr;
 	ID3D11SamplerState* m_pDefaultSSPoint = nullptr;
 	ID3D11BlendState* m_pAlphaBlendEnable = nullptr;

@@ -71,8 +71,13 @@ typedef list<DWORD>::iterator		DWORD_LIST_ITOR;
 typedef list< HANDLE >				HANDLE_LIST;
 typedef	list< HANDLE >::iterator	HANDLE_LIST_ITOR;
 
+
 extern float g_fSecPerFrame;
+extern float g_fTimer;
+extern int rightleft;
+extern UINT	g_uiState;
 extern HWND g_hWnd;
+
 
 typedef struct tagTRECT
 {

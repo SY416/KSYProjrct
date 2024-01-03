@@ -19,7 +19,9 @@ class UIobj
 public:
 	W_STR                   m_csName;
 	RECT					m_rtRect;
-	T_CONTROL_STATE			m_uiState;
+
+	
+
 	BOOL					m_isSelected = FALSE;
 	std::vector<Texture*>  m_pTexArray;
 	std::vector<TVertex>	m_VertexList;  // 시스템 메모리
@@ -35,7 +37,7 @@ public:
 	virtual bool	LoadTexture(T_STR_VECTOR texArray);
 	virtual bool    LoadTexture(std::wstring texFileName);
 	virtual bool    PreRender();
-	virtual bool    Frame(float fElapsTime);
+	virtual bool    Frame();
 	virtual bool    Render(ID3D11DeviceContext* pd3dContext);
 	virtual bool    PostRender();
 	virtual bool    Release();
@@ -54,7 +56,7 @@ public:
 public:
 	bool    Create(W_STR name, T_STR_VECTOR texFileName) override;
 	bool	LoadTexture(T_STR_VECTOR texArray) override;
-	bool    Frame(float fElapsTime) override;
+	bool    Frame() override;
 	bool    Render(ID3D11DeviceContext* pd3dContext) override;
 	bool    Release() override;
 };

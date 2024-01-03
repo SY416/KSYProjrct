@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -154,6 +154,7 @@
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="TextureMgr.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Trap.h" />
     <ClInclude Include="UIobj.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="std.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="TextureMgr.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Trap.cpp" />
     <ClCompile Include="UIobj.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Write.cpp" />

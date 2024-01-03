@@ -37,6 +37,7 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Trap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -78,6 +79,7 @@
     </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Trap.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Shader.txt" />

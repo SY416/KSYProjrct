@@ -13,7 +13,7 @@ bool	PlaneShape::LoadTexture(T_STR_VECTOR texArray)
         m_pTexArray.push_back(TextureMgr::Get().Load(texArray[i]));
     }
     m_ptTex = m_pTexArray[0];
-    return false;
+    return true;
 }
 ID3D11Buffer* PlaneShape::CreateBuffer(UINT ByteWidth, UINT BindFlags, void** pAddress)
 {

@@ -1,7 +1,9 @@
 #include "Player.h"
 #include "Input.h"
 
-bool    Player::Create(TInitSet info, W_STR texFileName)
+int rightleft=0;
+
+bool    Player::Create(TInitSet info, T_STR_VECTOR texFileName)
 {
     m_InitSet = info;
     m_csName = info.name;
@@ -56,11 +58,13 @@ bool Player::Frame()
     //  100프레임 -> 0.01초 *300  -> 300
     if (Input::Get().m_dwKeyState[VK_LEFT] == KEY_HOLD && m_vPos.x > 0)
     {
-        m_vPos.x = m_vPos.x - g_fSecPerFrame * 100;
+        m_vPos.x = m_vPos.x - g_fSecPerFrame * 300;
+        rightleft = 1;
     }
     if (Input::Get().m_dwKeyState[VK_RIGHT] == KEY_HOLD && m_vPos.x + m_InitSet.size.x < 1366)
     {
-        m_vPos.x = m_vPos.x + g_fSecPerFrame * 100;
+        m_vPos.x = m_vPos.x + g_fSecPerFrame * 300;
+        rightleft = 0;
     }
     
     if (Input::Get().m_dwKeyState[VK_DOWN] == KEY_UP)
