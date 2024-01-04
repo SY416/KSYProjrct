@@ -33,36 +33,36 @@ bool  Timer::Frame()
 bool  Timer::Render()
 {
 	m_outmsg.clear();
-	if (int(m_fGameTimer) / 60 < 10) {
+	if (int(g_fTimer) / 60 < 10) {
 		m_outmsg += L"0";
-		m_outmsg += std::to_wstring(int(m_fGameTimer) / 60);
+		m_outmsg += std::to_wstring(int(g_fTimer) / 60);
 		m_outmsg += L" 분 ";
 	}
 	else
 	{
-		m_outmsg += std::to_wstring(int(m_fGameTimer) / 60);
+		m_outmsg += std::to_wstring(int(g_fTimer) / 60);
 		m_outmsg += L" 분 ";
 	}
 
-	if (int(m_fGameTimer) % 60 < 10) {
+	if (int(g_fTimer) % 60 < 10) {
 		m_outmsg += L"0";
-		m_outmsg += std::to_wstring(int(m_fGameTimer) % 60);
+		m_outmsg += std::to_wstring(int(g_fTimer) % 60);
 		m_outmsg += L" 초 ";
 	}
 	else
 	{
-		m_outmsg += std::to_wstring(int(m_fGameTimer) % 60);
+		m_outmsg += std::to_wstring(int(g_fTimer) % 60);
 		m_outmsg += L" 초 ";
 	}
 
-	if (int(m_fGameTimer * 100) % 100 < 10) {
+	if (int(g_fTimer * 100) % 100 < 10) {
 		m_outmsg += L"0";
-		m_outmsg += std::to_wstring(int(m_fGameTimer * 100) % 100);
+		m_outmsg += std::to_wstring(int(g_fTimer * 100) % 100);
 		m_outmsg += L"";
 	}
 	else
 	{
-		m_outmsg += std::to_wstring(int(m_fGameTimer * 100) % 100);
+		m_outmsg += std::to_wstring(int(g_fTimer * 100) % 100);
 		m_outmsg += L"";
 	}
 	

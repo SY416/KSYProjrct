@@ -3,7 +3,6 @@
 
 class Player : public Block
 {
-	
 public:
 	TVector2    m_vPos;
 public:

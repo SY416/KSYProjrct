@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -148,13 +148,13 @@
     <ClInclude Include="Device.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="PlaneShape.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="TextureMgr.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Trap.h" />
     <ClInclude Include="UIobj.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="std.h" />
@@ -166,13 +166,13 @@
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="PlaneShape.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="TextureMgr.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Trap.cpp" />
     <ClCompile Include="UIobj.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Write.cpp" />
