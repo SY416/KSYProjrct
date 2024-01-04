@@ -7,6 +7,7 @@ class Sample : public Core
 public:
 
 	Sound* m_pBKSound = nullptr;
+	Sound* m_jumpSound = nullptr;
 
 	std::shared_ptr<Player> m_Player;
 

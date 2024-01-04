@@ -4,6 +4,7 @@
 bool    Sample::Init()
 {
     m_pBKSound = SoundMgr::Get().Load(L"../../data/BKSound.mp3");
+    m_jumpSound = SoundMgr::Get().Load(L"../../data/jumpSound.ogg");
     m_pBKSound->Play();
 
     m_Player = std::make_shared<Player>();
@@ -12,7 +13,7 @@ bool    Sample::Init()
     m_Player->m_rtClient = m_rtClient;
 
     TInitSet p_info = { L"Player",
-                    {100.0f, 100.0f },
+                    {100.0f, 400.0f },
                     {49.0f, 73.0f}};
     T_STR_VECTOR p_texArray = {
         L"../../data/서있기1.png",
@@ -225,7 +226,7 @@ bool    Sample::Init()
 
 bool	Sample::ThreadNPC()
 {
-    if (m_NPC->m_vPos.x - 20.0f < m_Player->m_vPos.x + m_Player->m_InitSet.size.x &&
+    /*if (m_NPC->m_vPos.x - 20.0f < m_Player->m_vPos.x + m_Player->m_InitSet.size.x &&
         m_NPC->m_vPos.x + m_NPC->m_InitSet.size.x + 20.0f > m_Player->m_vPos.x)
     {
         if (m_NPC->m_vPos.y - 20.0f < m_Player->m_vPos.y + m_Player->m_InitSet.size.y &&
@@ -233,10 +234,10 @@ bool	Sample::ThreadNPC()
         {
             if (Input::Get().m_dwKeyState['E'] == KEY_PUSH)
             {
-                MessageBox(g_hWnd, L"저~~기 꼭대기에 약초덤불 보이지?\n저기서 약초 좀 캐다 줘!", L"헤르샤", MB_OK);
+                MessageBox(g_hWnd, L"저기 꼭대기에 덤불에서 약초 좀 캐다 줘!", L"헤르샤", MB_OK);
             }
         }
-    }
+    }*/
     return true;
 }
 
@@ -258,7 +259,7 @@ bool    Sample::Frame()
         {
             if (Input::Get().m_dwKeyState['E'] == KEY_PUSH)
             {
-                MessageBox(g_hWnd, L"저~~기 꼭대기에 약초덤불 보이지?\n저기서 약초 좀 캐다 줘!", L"헤르샤", MB_OK);
+                MessageBox(g_hWnd, L"저기 꼭대기에 덤불에서 약초 좀 캐다 줘!", L"헤르샤", MB_OK);
             }
         }
     }
@@ -283,6 +284,7 @@ bool    Sample::Frame()
     if (m_jump && Input::Get().m_dwKeyState[VK_SPACE] == KEY_PUSH)
     {
         m_jumptime = g_fTimer + 0.3;
+        m_jumpSound->PlayEffect();
         m_jump = false;
     }
     if (g_fTimer < m_jumptime)
@@ -367,26 +369,32 @@ bool    Sample::Frame()
         if (m_Goal->m_vPos.y < m_Player->m_vPos.y + m_Player->m_InitSet.size.y &&
             m_Goal->m_vPos.y + m_Goal->m_InitSet.size.y > m_Player->m_vPos.y)
         {
-            std::wstring Cleartext = L"고마워~~\n시간은 ";
+            std::wstring Cleartext = L"굿!\n";
             if (int(g_fTimer) / 60 > 0)
             {
                 Cleartext += std::to_wstring(int(g_fTimer) / 60);
                 Cleartext += L" 분 ";
             }
             Cleartext += std::to_wstring(int(g_fTimer) % 60);
-            Cleartext += L" 초 걸렸어\n다시 도전해 볼래?";
+            Cleartext += L" 초 걸렸어\n재도전 할래?";
             LPCWSTR cleartext = Cleartext.c_str();
-            MessageBox(g_hWnd, cleartext, L"헤르샤", MB_OK);
-            if (IDOK)
+            if (MessageBox(g_hWnd, cleartext, L"헤르샤", MB_YESNO) == IDYES)
             {
                 g_fTimer = 0;
                 m_jumptime = 0;
                 m_Player->m_vPos.x = 100;
                 m_Player->m_vPos.y = 100;
             }
+            else
+            {
+                exit(0);
+                
+            
+            }
+            
         }
     }
-
+    
     
 
     m_Player->m_vPos.y = m_Player->m_vPos.y + g_fSecPerFrame * dropSpeed;
