@@ -259,7 +259,7 @@ bool    Sample::Frame()
         {
             if (Input::Get().m_dwKeyState['E'] == KEY_PUSH)
             {
-                MessageBox(g_hWnd, L"저기 꼭대기에 덤불에서 약초 좀 캐다 줘!", L"헤르샤", MB_OK);
+                MessageBox(g_hWnd, L"저기 꼭대기에 덤불에서 약초 좀 캐다 줘!\n좌우 방향키로 이동, \n스페이스바로 점프 할 수 있어", L"헤르샤", MB_OK);
             }
         }
     }
@@ -388,8 +388,6 @@ bool    Sample::Frame()
             else
             {
                 exit(0);
-                
-            
             }
             
         }
