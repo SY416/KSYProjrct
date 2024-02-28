@@ -2,6 +2,8 @@
 #include "Core.h"
 #include "Player.h"
 #include "Monster.h"
+#include "Message.h"
+#include "MovingBlock.h"
 class Sample : public Core
 {
 public:
@@ -38,6 +40,10 @@ public:
 	std::shared_ptr<Block> m_trap4;
 
 	std::shared_ptr<Monster> m_monster1;
+
+	std::shared_ptr<Message> m_message;
+
+	std::shared_ptr<MovingBlock> m_MB;
 	
 	bool	m_jump = false;
 	float	m_jumptime = 0;

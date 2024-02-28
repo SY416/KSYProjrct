@@ -200,7 +200,7 @@ bool    Sample::Init()
     m_block9->m_pd3dContext = m_pd3dContext;
     m_block9->m_rtClient = m_rtClient;
     TInitSet b_info9 = { L"Block9",
-                    {1200.0f, 280.0f },
+                    {0.0, 280.0f },
                     {128.0f, 43.0f} };
     if (!m_block9->Create(b_info9, L"../../data/128x43.png"))
     {
@@ -213,13 +213,37 @@ bool    Sample::Init()
     m_Goal->m_pd3dContext = m_pd3dContext;
     m_Goal->m_rtClient = m_rtClient;
     TInitSet g_info = { L"Goal",
-                    {1210.0f, 250.0f },
+                    {10.0f, 250.0f },
                     {122.0f, 36.0f} };
     if (!m_Goal->Create(g_info, L"../../data/goal.png"))
     {
         return false;
     }
 
+    m_MB = std::make_shared<MovingBlock>();
+    m_MB->m_pd3dDevice = m_pd3dDevice;
+    m_MB->m_pd3dContext = m_pd3dContext;
+    m_MB->m_rtClient = m_rtClient;
+    TInitSet mb_info = { L"MovingBlock",
+                    {100.0f, 280.0f },
+                    {128.0f, 43.0f} };
+    if (!m_MB->Create(mb_info, L"../../data/128x43.png"))
+    {
+        return false;
+    }
+    //m_BlockList.push_back(m_MB);
+
+    /*m_message = std::make_shared<Message>();
+    m_message->m_pd3dDevice = m_pd3dDevice;
+    m_message->m_pd3dContext = m_pd3dContext;
+    m_message->m_rtClient = m_rtClient;
+    MInitSet m_info = { L"message",
+    };
+    if (!m_message->Create(m_info, L"../../data/메세지박스.png"))
+    {
+        return false;
+    }*/
+    
 
     return true;
 }
@@ -246,6 +270,7 @@ bool    Sample::Frame()
     m_pBKSound->Frame();
     m_Player->Frame();
     m_monster1->Frame();
+    m_MB->Frame();
     
     //std::thread t1(ThreadNPC);
 
@@ -259,6 +284,7 @@ bool    Sample::Frame()
         {
             if (Input::Get().m_dwKeyState['E'] == KEY_PUSH)
             {
+                
                 MessageBox(g_hWnd, L"저기 꼭대기에 덤불에서 약초 좀 캐다 줘!\n좌우 방향키로 이동, \n스페이스바로 점프 할 수 있어", L"헤르샤", MB_OK);
             }
         }
@@ -312,6 +338,22 @@ bool    Sample::Frame()
             }
             j++;
         }     
+    }
+
+    if (dropSpeed >= 0.0f)
+    {
+        
+            if (m_MB->m_vPos.x < m_Player->m_vPos.x + 34.0f &&//block left > player right
+                m_MB->m_vPos.x + m_MB->m_InitSet.size.x > m_Player->m_vPos.x + 14.0f)
+            {
+                if (abs(m_MB->m_vPos.y - m_Player->m_vPos.y - m_Player->m_InitSet.size.y) < 3.0f)//땅위에 있으면
+                {
+                    dropSpeed = 0.0f;
+                    m_jump = true;
+                }
+            }
+            j++;
+        
     }
 
 
@@ -452,6 +494,7 @@ bool    Sample::Render()
 
     m_trap1->Render();
     m_monster1->Render();
+    m_MB->Render();
 
     m_NPC->Render();
     m_PE->Render();
@@ -484,6 +527,7 @@ bool    Sample::Release()
 
     if (m_trap1)m_trap1->Release();
     if (m_monster1)m_monster1->Release();
+    if (m_MB)m_MB->Release();
 
     return true;
 }

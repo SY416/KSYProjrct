@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -148,7 +148,9 @@
     <ClInclude Include="Device.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Message.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MovingBlock.h" />
     <ClInclude Include="PlaneShape.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sample.h" />
@@ -166,7 +168,9 @@
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MovingBlock.cpp" />
     <ClCompile Include="PlaneShape.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sample.cpp" />
