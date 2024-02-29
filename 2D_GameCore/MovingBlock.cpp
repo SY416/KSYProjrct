@@ -1,12 +1,14 @@
 #include "MovingBlock.h"
 #include "Input.h"
 int turn = 0;
+int turn2 = 0;
 
 bool    MovingBlock::Create(TInitSet info, W_STR texFileName)
 {
     m_InitSet = info;
     m_csName = info.name;
     m_vPos = info.p;
+    m_vSize = info.size;
     PlaneShape::Create(m_csName, texFileName);
     return true;
 }
@@ -55,19 +57,35 @@ bool MovingBlock::Frame()
     //  1프레임  -> 1초 * 300     -> 300
     //  10프레임 -> 0.1초 * 300   -> 300
     //  100프레임 -> 0.01초 *300  -> 300
-    if (turn == 0)
+    if (turn == 0 && m_vSize.x > 40)
     {
         m_vPos.x = m_vPos.x + g_fSecPerFrame * 200;
-        if (m_vPos.x >= 900.0f) {
+        if (m_vPos.x >= 700.0f) {
             turn = 1;
         }
     }
     
-    else if  (turn == 1)
+    else if  (turn == 1 && m_vSize.x > 40)
     {
         m_vPos.x = m_vPos.x - g_fSecPerFrame * 200;
-        if (m_vPos.x <= 150.0f) {
+        if (m_vPos.x <= 510.0f) {
             turn = 0;
+        }
+    }
+
+    if (turn2 == 0 && m_vSize.x < 40)
+    {
+        m_vPos.x = m_vPos.x + g_fSecPerFrame * 400;
+        if (m_vPos.x >= 1100.0f) {
+            turn2 = 1;
+        }
+    }
+
+    else if (turn2 == 1 && m_vSize.x < 40)
+    {
+        m_vPos.x = m_vPos.x - g_fSecPerFrame * 400;
+        if (m_vPos.x <= 350.0f) {
+            turn2 = 0;
         }
     }
 

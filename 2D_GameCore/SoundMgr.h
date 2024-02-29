@@ -1,8 +1,8 @@
 #pragma once
 #include "std.h"
-#include "fmod.hpp"
-#include "fmod_errors.h"
-#pragma comment(lib, "fmod_vc.lib")
+#include "../../FMod/inc/fmod.hpp"
+#include "../../FMod/inc/fmod_errors.h"
+#pragma comment(lib, "../../FMod/lib/x64/fmod_vc.lib")
 
 class Sound
 {

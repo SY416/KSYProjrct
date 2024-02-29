@@ -14,6 +14,7 @@ public:
 	std::shared_ptr<Player> m_Player;
 
 	std::shared_ptr<Block> m_Goal;
+	std::shared_ptr<Block> m_BiSangGu;
 
 	std::shared_ptr<Block> m_TimeBox;
 
@@ -31,6 +32,12 @@ public:
 	std::shared_ptr<Block> m_block7;
 	std::shared_ptr<Block> m_block8;
 	std::shared_ptr<Block> m_block9;
+	std::shared_ptr<Block> m_block10;
+	std::shared_ptr<Block> m_block11;
+	std::shared_ptr<Block> m_block12;
+	std::shared_ptr<Block> m_block13;
+	std::shared_ptr<Block> m_block14;
+	std::shared_ptr<Block> m_block15;
 
 	std::vector<std::shared_ptr<Block>> m_TrapList;
 
@@ -44,6 +51,7 @@ public:
 	std::shared_ptr<Message> m_message;
 
 	std::shared_ptr<MovingBlock> m_MB;
+	std::shared_ptr<MovingBlock> m_MT;
 	
 	bool	m_jump = false;
 	float	m_jumptime = 0;

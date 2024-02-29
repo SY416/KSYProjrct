@@ -1,12 +1,13 @@
 #pragma once
 #include "std.h"
-//#include "../../include/DirectXTex.h"
+#include "../../include/DirectXTex.h"
 //프로젝트 속성에서 C++-> 추가 포함 디렉토리에 ../../include 한다.
-#include "DirectXTex.h"
+//#include "DirectXTex.h"
 
 //프로젝트 속성에 링커->입력->추가종속성 d3d11.lib; d3dcompiler.lib; DirectXTex.lib;
 //#pragma commnet을 이용하면 프로젝트으로 포함할 수 있다.
-#pragma comment (lib, "DirectXTex.lib")
+//#pragma comment (lib, "../../lib/DirectXTex.lib")//디버그
+#pragma comment (lib, "../../lib/DirectXTexR.lib")//릴리즈
 class Texture
 {
 public:

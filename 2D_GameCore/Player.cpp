@@ -71,6 +71,24 @@ bool Player::Frame()
     {
     }
     
+    if (m_vPos.y > 850)
+    {
+        m_vPos.y = 580;
+    }
+
+    if (m_vPos.x > 1200 && m_vPos.y > 580)
+    {
+        if (Input::Get().m_dwKeyState['E'] == KEY_PUSH) {
+            if (MessageBox(g_hWnd, L"Á¤¸»·Î ³ª°¥²¨¾ß?", L"Çì¸£»þ", MB_YESNO) == IDYES)
+            {
+                exit(0);
+            }
+            else {
+
+            }
+        }
+        
+    }
     SetPosion(m_vPos);
     return true;
 }

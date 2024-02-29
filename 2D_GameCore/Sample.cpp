@@ -182,25 +182,14 @@ bool    Sample::Init()
     }
     m_BlockList.push_back(m_block7);
 
-    m_block8 = std::make_shared<Block>();
-    m_block8->m_pd3dDevice = m_pd3dDevice;
-    m_block8->m_pd3dContext = m_pd3dContext;
-    m_block8->m_rtClient = m_rtClient;
-    TInitSet b_info8 = { L"Block8",
-                    {1050.0f, 280.0f },
-                    {128.0f, 43.0f} };
-    if (!m_block8->Create(b_info8, L"../../data/128x43.png"))
-    {
-        return false;
-    }
-    m_BlockList.push_back(m_block8);
+    
 
     m_block9 = std::make_shared<Block>();
     m_block9->m_pd3dDevice = m_pd3dDevice;
     m_block9->m_pd3dContext = m_pd3dContext;
     m_block9->m_rtClient = m_rtClient;
     TInitSet b_info9 = { L"Block9",
-                    {0.0, 280.0f },
+                    {1050.0f, 160.0f },
                     {128.0f, 43.0f} };
     if (!m_block9->Create(b_info9, L"../../data/128x43.png"))
     {
@@ -208,14 +197,117 @@ bool    Sample::Init()
     }
     m_BlockList.push_back(m_block9);
 
+    m_block10 = std::make_shared<Block>();
+    m_block10->m_pd3dDevice = m_pd3dDevice;
+    m_block10->m_pd3dContext = m_pd3dContext;
+    m_block10->m_rtClient = m_rtClient;
+    TInitSet b_info10 = { L"Block10",
+                    {450.0f, 220.0f },
+                    {38.0f, 42.0f} };
+    if (!m_block10->Create(b_info10, L"../../data/38x42.png"))
+    {
+        return false;
+    }
+    m_BlockList.push_back(m_block10);
+
+    m_block11 = std::make_shared<Block>();
+    m_block11->m_pd3dDevice = m_pd3dDevice;
+    m_block11->m_pd3dContext = m_pd3dContext;
+    m_block11->m_rtClient = m_rtClient;
+    TInitSet b_info11 = { L"Block11",
+                    {450.0, 160.0f },
+                    {38.0f, 42.0f} };
+    if (!m_block11->Create(b_info11, L"../../data/38x42.png"))
+    {
+        return false;
+    }
+    m_BlockList.push_back(m_block11);
+
+    m_block12 = std::make_shared<Block>();
+    m_block12->m_pd3dDevice = m_pd3dDevice;
+    m_block12->m_pd3dContext = m_pd3dContext;
+    m_block12->m_rtClient = m_rtClient;
+    TInitSet b_info12 = { L"Block12",
+                    {570.0, 160.0f },
+                    {38.0f, 42.0f} };
+    if (!m_block12->Create(b_info12, L"../../data/38x42.png"))
+    {
+        return false;
+    }
+    m_BlockList.push_back(m_block12);
+
+    m_block13 = std::make_shared<Block>();
+    m_block13->m_pd3dDevice = m_pd3dDevice;
+    m_block13->m_pd3dContext = m_pd3dContext;
+    m_block13->m_rtClient = m_rtClient;
+    TInitSet b_info13 = { L"Block13",
+                    {690.0, 160.0f },
+                    {38.0f, 42.0f} };
+    if (!m_block13->Create(b_info13, L"../../data/38x42.png"))
+    {
+        return false;
+    }
+    m_BlockList.push_back(m_block13);
+
+    m_block14 = std::make_shared<Block>();
+    m_block14->m_pd3dDevice = m_pd3dDevice;
+    m_block14->m_pd3dContext = m_pd3dContext;
+    m_block14->m_rtClient = m_rtClient;
+    TInitSet b_info14 = { L"Block14",
+                    {810.0, 160.0f },
+                    {38.0f, 42.0f} };
+    if (!m_block14->Create(b_info14, L"../../data/38x42.png"))
+    {
+        return false;
+    }
+    m_BlockList.push_back(m_block14);
+
+    m_block15 = std::make_shared<Block>();
+    m_block15->m_pd3dDevice = m_pd3dDevice;
+    m_block15->m_pd3dContext = m_pd3dContext;
+    m_block15->m_rtClient = m_rtClient;
+    TInitSet b_info15 = { L"Block15",
+                    {930.0, 160.0f },
+                    {38.0f, 42.0f} };
+    if (!m_block15->Create(b_info15, L"../../data/38x42.png"))
+    {
+        return false;
+    }
+    m_BlockList.push_back(m_block15);
+
+    m_block8 = std::make_shared<Block>();//∞Ò πﬂ∆«
+    m_block8->m_pd3dDevice = m_pd3dDevice;
+    m_block8->m_pd3dContext = m_pd3dContext;
+    m_block8->m_rtClient = m_rtClient;
+    TInitSet b_info8 = { L"Block8",
+                    {1178.0f, 160.0f },
+                    {128.0f, 43.0f} };
+    if (!m_block8->Create(b_info8, L"../../data/128x43.png"))
+    {
+        return false;
+    }
+    m_BlockList.push_back(m_block8);
+
     m_Goal = std::make_shared<Block>();
     m_Goal->m_pd3dDevice = m_pd3dDevice;
     m_Goal->m_pd3dContext = m_pd3dContext;
     m_Goal->m_rtClient = m_rtClient;
     TInitSet g_info = { L"Goal",
-                    {10.0f, 250.0f },
+                    {1188.0f, 130.0f },
                     {122.0f, 36.0f} };
     if (!m_Goal->Create(g_info, L"../../data/goal.png"))
+    {
+        return false;
+    }
+
+    m_BiSangGu = std::make_shared<Block>();
+    m_BiSangGu->m_pd3dDevice = m_pd3dDevice;
+    m_BiSangGu->m_pd3dContext = m_pd3dContext;
+    m_BiSangGu->m_rtClient = m_rtClient;
+    TInitSet bsg_info = { L"BiSangGu",
+                    {1200.0f, 590.0f },
+                    {94.0f, 116.0f} };
+    if (!m_BiSangGu->Create(bsg_info, L"../../data/≈ª√‚±∏.png"))
     {
         return false;
     }
@@ -225,13 +317,24 @@ bool    Sample::Init()
     m_MB->m_pd3dContext = m_pd3dContext;
     m_MB->m_rtClient = m_rtClient;
     TInitSet mb_info = { L"MovingBlock",
-                    {100.0f, 280.0f },
+                    {510.0f, 280.0f },
                     {128.0f, 43.0f} };
     if (!m_MB->Create(mb_info, L"../../data/128x43.png"))
     {
         return false;
     }
-    //m_BlockList.push_back(m_MB);
+
+    m_MT = std::make_shared<MovingBlock>();
+    m_MT->m_pd3dDevice = m_pd3dDevice;
+    m_MT->m_pd3dContext = m_pd3dContext;
+    m_MT->m_rtClient = m_rtClient;
+    TInitSet mt_info = { L"MovingTrab",
+                    {350.0f, 120.0f },
+                    {33.0f, 32.0f} };
+    if (!m_MT->Create(mt_info, L"../../data/¿œ¥‹¥Î√Ê.png"))
+    {
+        return false;
+    }
 
     /*m_message = std::make_shared<Message>();
     m_message->m_pd3dDevice = m_pd3dDevice;
@@ -271,6 +374,7 @@ bool    Sample::Frame()
     m_Player->Frame();
     m_monster1->Frame();
     m_MB->Frame();
+    m_MT->Frame();
     
     //std::thread t1(ThreadNPC);
 
@@ -384,6 +488,27 @@ bool    Sample::Frame()
         i++;
     }
 
+    if (m_MT->m_vPos.x < m_Player->m_vPos.x + 34.0f &&//block left < player right
+        m_MT->m_vPos.x + m_MT->m_InitSet.size.x * 0.5 > m_Player->m_vPos.x + 14.0f)
+    {
+        if (m_MT->m_vPos.y < m_Player->m_vPos.y + m_Player->m_InitSet.size.y &&
+            m_MT->m_vPos.y + m_MT->m_InitSet.size.y > m_Player->m_vPos.y)
+        {
+            m_Player->m_vPos.x = m_Player->m_vPos.x + g_fSecPerFrame * (-10000.0f);
+            dropSpeed = -5000.0f;
+        }
+    }
+    if (m_MT->m_vPos.x + m_MT->m_InitSet.size.x * 0.5 < m_Player->m_vPos.x + 34.0f &&//block left < player right
+        m_MT->m_vPos.x + m_MT->m_InitSet.size.x > m_Player->m_vPos.x + 14.0f)
+    {
+        if (m_MT->m_vPos.y < m_Player->m_vPos.y + m_Player->m_InitSet.size.y &&
+            m_MT->m_vPos.y + m_MT->m_InitSet.size.y > m_Player->m_vPos.y)
+        {
+            m_Player->m_vPos.x = m_Player->m_vPos.x + g_fSecPerFrame * 10000.0f;
+            dropSpeed = -5000.0f;
+        }
+    }
+
     if (m_monster1->m_vPos.x < m_Player->m_vPos.x + 34.0f &&//block left < player right
         m_monster1->m_vPos.x + m_monster1->m_InitSet.size.x * 0.5 > m_Player->m_vPos.x + 14.0f)
     {
@@ -490,15 +615,23 @@ bool    Sample::Render()
     m_block7->Render();
     m_block8->Render();
     m_block9->Render();
+    m_block10->Render();
+    m_block11->Render();
+    m_block12->Render();
+    m_block13->Render();
+    m_block14->Render();
+    m_block15->Render();
 
 
     m_trap1->Render();
     m_monster1->Render();
     m_MB->Render();
+    m_MT->Render();
 
     m_NPC->Render();
     m_PE->Render();
     m_Goal->Render();
+    m_BiSangGu->Render();
     m_Player->Render();
 
     m_TimeBox->Render();
@@ -524,10 +657,18 @@ bool    Sample::Release()
     if (m_block7)m_block7->Release();
     if (m_block8)m_block8->Release();
     if (m_block9)m_block9->Release();
+    if (m_block10)m_block10->Release();
+    if (m_block11)m_block11->Release();
+    if (m_block12)m_block12->Release();
+    if (m_block13)m_block13->Release();
+    if (m_block14)m_block14->Release();
+    if (m_block15)m_block15->Release();
 
     if (m_trap1)m_trap1->Release();
     if (m_monster1)m_monster1->Release();
     if (m_MB)m_MB->Release();
+    if (m_MT)m_MT->Release();
+    if(m_BiSangGu)m_BiSangGu->Release();
 
     return true;
 }

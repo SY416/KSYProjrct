@@ -5,6 +5,7 @@ class MovingBlock : public Block
 {
 public:
 	TVector2    m_vPos;
+	TVector2    m_vSize;
 public:
 
 	bool   Frame() override;
